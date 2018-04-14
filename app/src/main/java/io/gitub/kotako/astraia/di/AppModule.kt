@@ -4,25 +4,29 @@ import android.app.Application
 import android.content.Context
 import dagger.Module
 import dagger.Provides
-import io.gitub.kotako.astraia.data.source.remote.RemoteDataRepository
+import io.gitub.kotako.astraia.data.source.ArticleRepository
+import io.gitub.kotako.astraia.data.source.DataSource
+import io.gitub.kotako.astraia.data.source.remote.RemoteDataSource
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
-class AppModule {
+object AppModule {
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     fun provideContext(application: Application): Context = application
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     fun provideOkHttpClient(): OkHttpClient = OkHttpClient()
 
-    @Provides @Named("retrofitForCinii") @Singleton
-    fun provideRetrofitForCinii(okHttpClient: OkHttpClient): Retrofit {
+    @Provides
+    @Singleton
+    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
                 .client(okHttpClient)
                 .baseUrl("http://ci.nii.ac.jp")
@@ -31,6 +35,11 @@ class AppModule {
                 .build()
     }
 
-    @Provides @Singleton
-    fun provideRemoteDataRepository(retrofit: Retrofit): RemoteDataRepository = RemoteDataRepository(retrofit)
+    @Provides
+    @Singleton
+    fun provideRemoteDataSource(retrofit: Retrofit): DataSource = RemoteDataSource(retrofit)
+
+    @Provides
+    @Singleton
+    fun provideArticleRepository(remoteDataSource: DataSource) = ArticleRepository(remoteDataSource)
 }

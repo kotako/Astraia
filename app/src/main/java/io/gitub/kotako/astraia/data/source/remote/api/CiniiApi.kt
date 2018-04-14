@@ -1,9 +1,9 @@
-package io.gitub.kotako.astraia.data.source.remote
+package io.gitub.kotako.astraia.data.source.remote.api
 
 import io.gitub.kotako.astraia.BuildConfig
-import io.gitub.kotako.astraia.data.source.ArticleResponse
-import io.gitub.kotako.astraia.data.source.ArticlesResponse
-import io.gitub.kotako.astraia.data.source.AuthorsResponse
+import io.gitub.kotako.astraia.data.source.remote.response.ArticleResponse
+import io.gitub.kotako.astraia.data.source.remote.response.ArticlesResponse
+import io.gitub.kotako.astraia.data.source.remote.response.AuthorsResponse
 import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Path

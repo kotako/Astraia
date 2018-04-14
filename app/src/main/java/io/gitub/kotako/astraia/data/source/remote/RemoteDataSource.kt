@@ -4,14 +4,14 @@ import io.gitub.kotako.astraia.data.Article
 import io.gitub.kotako.astraia.data.ArticleColumn
 import io.gitub.kotako.astraia.data.Author
 import io.gitub.kotako.astraia.data.source.DataSource
+import io.gitub.kotako.astraia.data.source.remote.api.CiniiApi
 import io.reactivex.Single
 import retrofit2.Retrofit
 import javax.inject.Inject
-import javax.inject.Named
 
-open class RemoteDataRepository @Inject constructor(
-        @Named("retrofitForCinii") private val retrofit: Retrofit
-): DataSource {
+open class RemoteDataSource @Inject constructor(
+        private val retrofit: Retrofit
+) : DataSource {
 
     override fun fetchArticle(articleId: Long): Single<Article> {
         return retrofit.create(CiniiApi::class.java)

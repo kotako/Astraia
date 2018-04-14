@@ -1,4 +1,4 @@
-package io.gitub.kotako.astraia.data.source
+package io.gitub.kotako.astraia.data.source.remote.response
 
 import com.google.gson.annotations.SerializedName
 import io.gitub.kotako.astraia.data.Article
