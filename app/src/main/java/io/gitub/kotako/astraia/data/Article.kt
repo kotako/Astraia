@@ -2,72 +2,102 @@ package io.gitub.kotako.astraia.data
 
 import com.google.gson.annotations.SerializedName
 
+interface ArticleEntity {
+    val link: String
+    val linkJson: Link
+    val titles: List<Name>
+    val publishers: List<Name>
+    val publications: List<Name>
+    val issn: String
+    val description: String
+    val journalNumber: Int
+    val issueNumber: Int
+    val startingPage: Int
+    val endingPage: Int
+    val publishedAt: String
+    val id: Long
+    val nacsisId: String
+    val dnlId: String
+    val lang: String
+    val citedCount: Int
+    val sources: List<Name>
+    val jounal: Link
+    val relatedLinks: List<Link>
+    val topics: List<Names>
+    val image: Link
+    val authors: List<AuthorLink>
+}
+
 data class Article(
         @SerializedName("@id")
-        val link: String = "",
+        override val link: String = "",
 
         @SerializedName("dc:title")
-        val titles: List<ArticleTitle> = emptyList(),
+        override val titles: List<Name> = emptyList(),
 
         @SerializedName("dc:publisher")
-        val publishers: List<Publisher> = emptyList(),
+        override val publishers: List<Name> = emptyList(),
 
         @SerializedName("prism:publicationName")
-        val publications: List<Publication> = emptyList(),
+        override val publications: List<Name> = emptyList(),
 
         @SerializedName("prism:issn")
-        val issn: String = "",
+        override val issn: String = "",
 
         @SerializedName("prism:volume")
-        val journalNumber: Int = 0,
+        override val journalNumber: Int = 0,
 
         @SerializedName("prism:number")
-        val issueNumber: Int = 0,
+        override val issueNumber: Int = 0,
 
         @SerializedName("prism:startingPage")
-        val startingPage: Int = 0,
+        override val startingPage: Int = 0,
 
         @SerializedName("prism:endingPage")
-        val endingPage: Int = 0,
+        override val endingPage: Int = 0,
 
         @SerializedName("prism:publicationDate")
-        val publishedAt: String = "",
+        override val publishedAt: String = "",
 
         @SerializedName("cinii:naid")
-        val id: Long = 0L,
+        override val id: Long = 0L,
 
         @SerializedName("cinii:ncid")
-        val nacsisId: String = "",
+        override val nacsisId: String = "",
 
         @SerializedName("cinii:ndljpi")
-        val dnlId: String = "",
+        override val dnlId: String = "",
 
         @SerializedName("dc:language")
-        val lang: String = "",
+        override val lang: String = "",
 
         @SerializedName("cinii:references")
-        val citedCount: Int = 0,
+        override val citedCount: Int = 0,
 
         @SerializedName("dc:source")
-        val sources: List<Source> = emptyList(),
+        override val sources: List<Name> = emptyList(),
 
         @SerializedName("dcterms:isPartOf")
-        val jounal: Journal = Journal(),
+        override val jounal: Link = Link(),
 
         @SerializedName("rdfs:seeAlso")
-        val relatedLinks: List<Link> = emptyList(),
+        override val relatedLinks: List<Link> = emptyList(),
 
         @SerializedName("foaf:topic")
-        val topics: List<Topic> = emptyList(),
+        override val topics: List<Names> = emptyList(),
 
         @SerializedName("foaf:depiction")
-        val image: Link = Link(),
+        override val image: Link = Link(),
 
         @SerializedName("foaf:maker")
-        val authors: List<AuthorLink> = emptyList()
-)
+        override val authors: List<AuthorLink> = emptyList(),
 
-data class ArticleTitle(
+        override val description: String = "",
+
+        override val linkJson: Link = Link()
+): ArticleEntity
+
+data class Name(
         @SerializedName("@value")
         val name: String = "",
 
@@ -75,33 +105,12 @@ data class ArticleTitle(
         val lang: String = ""
 )
 
-data class Publication(
-        @SerializedName("@value")
-        val name: String = "",
-
-        @SerializedName("@language")
-        val lang: String = ""
-)
-
-data class Publisher (
-        @SerializedName("@value")
-        val name: String = "",
-
-        @SerializedName("@language")
-        val lang: String = ""
-)
-
-data class Source(
-        @SerializedName("@value")
-        val name: String = ""
-)
-
-data class Journal(
+data class Names(
         @SerializedName("@id")
         val link: String = "",
 
         @SerializedName("dc:title")
-        val title: String = ""
+        val names: List<Name> = emptyList()
 )
 
 data class AuthorLink(
@@ -128,30 +137,5 @@ data class Organization(
         val link: String = "",
 
         @SerializedName("foaf:name")
-        val names: List<OrganizationName> = emptyList()
-)
-
-data class OrganizationName(
-        @SerializedName("@value")
-        val name: String = "",
-
-        @SerializedName("@language")
-        val lang: String = ""
-)
-
-
-data class Topic(
-        @SerializedName("@id")
-        val link: String = "",
-
-        @SerializedName("dc:title")
-        val titles: List<TopicTitle> = emptyList()
-)
-
-data class TopicTitle(
-        @SerializedName("@value")
-        val title: String = "",
-
-        @SerializedName("@language")
-        val lang: String = ""
+        val names: List<Name> = emptyList()
 )

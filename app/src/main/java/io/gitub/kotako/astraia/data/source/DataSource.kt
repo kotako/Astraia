@@ -1,9 +1,6 @@
 package io.gitub.kotako.astraia.data.source
 
-import io.gitub.kotako.astraia.data.Article
-import io.gitub.kotako.astraia.data.ArticleColumn
-import io.gitub.kotako.astraia.data.Author
-import io.gitub.kotako.astraia.data.AuthorColumn
+import io.gitub.kotako.astraia.data.*
 import io.reactivex.Single
 
 interface DataSource {
@@ -25,9 +22,9 @@ interface DataSource {
                       yearFrom: Int? = null,
                       yearTo: Int? = null,
                       articleBodyAvailable: Int? = null,
-                      sortOrder: Int? = null): Single<List<ArticleColumn>>
+                      sortOrder: Int? = null): Single<List<ArticleEntity>>
 
-    fun fetchArticle(articleId: Long): Single<Article>
+    fun fetchArticle(articleId: Long): Single<ArticleEntity>
 
     fun fetchAuthors(keyword: String,
                      count: Int? = null,

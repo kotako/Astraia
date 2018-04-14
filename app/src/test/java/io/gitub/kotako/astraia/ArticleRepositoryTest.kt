@@ -1,9 +1,6 @@
 package io.gitub.kotako.astraia
 
-import io.gitub.kotako.astraia.data.Article
-import io.gitub.kotako.astraia.data.ArticleColumn
-import io.gitub.kotako.astraia.data.Author
-import io.gitub.kotako.astraia.data.AuthorColumn
+import io.gitub.kotako.astraia.data.*
 import io.gitub.kotako.astraia.data.source.ArticleRepository
 import io.gitub.kotako.astraia.data.source.DataSource
 import io.gitub.kotako.astraia.data.source.remote.RemoteDataSource
@@ -38,7 +35,7 @@ class ArticleRepositoryTest {
     fun キーワードから論文を取得する() {
         articleRepository.fetchArticles(keyword = "android")
                 .subscribeOn(Schedulers.io())
-                .subscribe { articles: List<ArticleColumn>?, t: Throwable? ->
+                .subscribe { articles: List<ArticleEntity>?, t: Throwable? ->
                     articles?.run {
                         print(articles)
                         assert(articles.isNotEmpty())
@@ -68,7 +65,7 @@ class ArticleRepositoryTest {
     fun 論文IDから論文を取得() {
         articleRepository.fetchArticle(articleId = 40021450187)
                 .subscribeOn(Schedulers.io())
-                .subscribe { article: Article?, t: Throwable? ->
+                .subscribe { article: ArticleEntity?, t: Throwable? ->
                     article?.run {
                         print(article)
                         assert(article != Article())

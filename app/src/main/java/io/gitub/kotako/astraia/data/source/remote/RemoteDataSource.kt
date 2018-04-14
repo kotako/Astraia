@@ -1,9 +1,6 @@
 package io.gitub.kotako.astraia.data.source.remote
 
-import io.gitub.kotako.astraia.data.Article
-import io.gitub.kotako.astraia.data.ArticleColumn
-import io.gitub.kotako.astraia.data.Author
-import io.gitub.kotako.astraia.data.AuthorColumn
+import io.gitub.kotako.astraia.data.*
 import io.gitub.kotako.astraia.data.source.DataSource
 import io.gitub.kotako.astraia.data.source.remote.api.CiniiApi
 import io.reactivex.Single
@@ -14,17 +11,17 @@ open class RemoteDataSource @Inject constructor(
         private val retrofit: Retrofit
 ) : DataSource {
 
-    override fun fetchArticle(articleId: Long): Single<Article> {
+    override fun fetchArticle(articleId: Long): Single<ArticleEntity> {
         return retrofit.create(CiniiApi::class.java)
                 .fetchArticle(articleId = articleId)
-                .map { response -> response.value.first() }
+                .map { response -> response.body.first() as ArticleEntity }
                 .singleOrError()
     }
 
-    override fun fetchArticles(keyword: String, count: Int?, lang: String?, startIndex: Int?, title: String?, author: String?, authorId: Long?, issn: String?, publisher: String?, affiliation: String?, journal: String?, volumeNumber: Int?, issueNumber: Int?, page: Int?, references: String?, yearFrom: Int?, yearTo: Int?, articleBodyAvailable: Int?, sortOrder: Int?): Single<List<ArticleColumn>> {
+    override fun fetchArticles(keyword: String, count: Int?, lang: String?, startIndex: Int?, title: String?, author: String?, authorId: Long?, issn: String?, publisher: String?, affiliation: String?, journal: String?, volumeNumber: Int?, issueNumber: Int?, page: Int?, references: String?, yearFrom: Int?, yearTo: Int?, articleBodyAvailable: Int?, sortOrder: Int?): Single<List<ArticleEntity>> {
         return retrofit.create(CiniiApi::class.java)
                 .fetchArticles(
-                        keyword = "android",
+                        keyword = keyword,
                         count = count,
                         lang = lang,
                         startIndex = startIndex,
@@ -43,7 +40,7 @@ open class RemoteDataSource @Inject constructor(
                         yearTo = yearTo,
                         articleBodyAvailable = articleBodyAvailable,
                         sort = sortOrder)
-                .map { response -> response.body.first().articles }
+                .map { response -> response.body.first().articles.map { article -> article as ArticleEntity } }
                 .singleOrError()
     }
 

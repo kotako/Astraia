@@ -1,9 +1,6 @@
 package io.gitub.kotako.astraia
 
-import io.gitub.kotako.astraia.data.Article
-import io.gitub.kotako.astraia.data.ArticleColumn
-import io.gitub.kotako.astraia.data.Author
-import io.gitub.kotako.astraia.data.AuthorColumn
+import io.gitub.kotako.astraia.data.*
 import io.gitub.kotako.astraia.data.source.ArticleRepository
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
@@ -25,7 +22,7 @@ class ArticleRepositoryMockTest {
         articleRepository = mock(ArticleRepository::class.java)
 
         `when`(articleRepository.fetchArticles(keyword = "android")).thenReturn(
-                Observable.just(listOf(ArticleColumn()))
+                Observable.just(listOf(ArticleColumn() as ArticleEntity))
                         .singleOrError()
         )
         `when`(articleRepository.fetchAuthors(keyword = "android")).thenReturn(
@@ -33,7 +30,7 @@ class ArticleRepositoryMockTest {
                         .singleOrError()
         )
         `when`(articleRepository.fetchArticle(articleId = 0L)).thenReturn(
-                Observable.just(Article())
+                Observable.just(Article() as ArticleEntity)
                         .singleOrError()
         )
         `when`(articleRepository.fetchAuthor(authorId = 0L)).thenReturn(
@@ -46,7 +43,7 @@ class ArticleRepositoryMockTest {
     fun キーワードから論文を取得する() {
         articleRepository.fetchArticles(keyword = "android")
                 .subscribeOn(Schedulers.io())
-                .subscribe { articles: List<ArticleColumn>?, t: Throwable? ->
+                .subscribe { articles: List<ArticleEntity>?, t: Throwable? ->
                     articles?.run {
                         print(articles.first())
                         assert(articles.isNotEmpty())
@@ -80,7 +77,7 @@ class ArticleRepositoryMockTest {
     fun 論文IDから論文を取得() {
         articleRepository.fetchArticle(articleId = 0L)
                 .subscribeOn(Schedulers.io())
-                .subscribe { article: Article?, t: Throwable? ->
+                .subscribe { article: ArticleEntity?, t: Throwable? ->
                     article?.run {
                         print(article)
                         assert(article == Article())
