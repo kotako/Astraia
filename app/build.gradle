@@ -1,3 +1,6 @@
+def localProperties = new Properties()
+localProperties.load(new FileInputStream(rootProject.file('local.properties')))
+
 apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
@@ -18,6 +21,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField("String", "CINII_API_KEY", "${localProperties.getProperty("cinii_api_key")}")
+        }
+        debug {
+            buildConfigField("String", "CINII_API_KEY", "${localProperties.getProperty("cinii_api_key")}")
         }
     }
 }
@@ -31,5 +38,10 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
+//  for Repository
     implementation 'com.google.code.gson:gson:2.8.2'
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.12'
 }
