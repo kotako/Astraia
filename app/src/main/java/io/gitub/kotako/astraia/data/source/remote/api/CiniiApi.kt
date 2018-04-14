@@ -3,6 +3,7 @@ package io.gitub.kotako.astraia.data.source.remote.api
 import io.gitub.kotako.astraia.BuildConfig
 import io.gitub.kotako.astraia.data.source.remote.response.ArticleResponse
 import io.gitub.kotako.astraia.data.source.remote.response.ArticlesResponse
+import io.gitub.kotako.astraia.data.source.remote.response.AuthorResponse
 import io.gitub.kotako.astraia.data.source.remote.response.AuthorsResponse
 import io.reactivex.Observable
 import retrofit2.http.GET
@@ -50,5 +51,5 @@ interface CiniiApi {
     fun fetchArticle(@Path("article_id") articleId: Long): Observable<ArticleResponse>
 
     @GET("/nrid/{author_id}.json")
-    fun fetchAuthor(@Path("author_id") authorId: Long?): Observable<AuthorsResponse>
+    fun fetchAuthor(@Path("author_id") authorId: Long?): Observable<AuthorResponse>
 }

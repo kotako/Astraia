@@ -7,14 +7,27 @@ data class Author(
         val link: String = "",
 
         @SerializedName("foaf:name")
-        private val nameData: List<CiniiData> = emptyList(),
-
-        @SerializedName("rdfs:seeAlso")
-        val relatedLinks: List<CiniiData> = emptyList(),
+        val names: List<AuthorName> = emptyList(),
 
         @SerializedName("foaf:interest")
-        val interest: List<CiniiData> = emptyList()
+        val intersts: List<Interest> = emptyList(),
 
-) {
-    val names: List<String> = nameData.map { item -> item.value }
-}
+        @SerializedName("rdfs:seeAlso")
+        val externalLinks: List<Link> = emptyList()
+)
+
+data class Interest(
+        @SerializedName("id")
+        val link: String = "",
+
+        @SerializedName("dc:title")
+        val titles: List<IntrestTitle> = emptyList()
+)
+
+data class IntrestTitle(
+        @SerializedName("@value")
+        val title: String = "",
+
+        @SerializedName("@language")
+        val lang: String = ""
+)

@@ -3,42 +3,35 @@ package io.gitub.kotako.astraia
 import io.gitub.kotako.astraia.data.Article
 import io.gitub.kotako.astraia.data.ArticleColumn
 import io.gitub.kotako.astraia.data.Author
+import io.gitub.kotako.astraia.data.AuthorColumn
 import io.gitub.kotako.astraia.data.source.ArticleRepository
-import io.reactivex.Observable
+import io.gitub.kotako.astraia.data.source.DataSource
+import io.gitub.kotako.astraia.data.source.remote.RemoteDataSource
 import io.reactivex.schedulers.Schedulers
-import org.junit.Test
+import okhttp3.OkHttpClient
 import org.junit.Before
-
-import org.mockito.Mockito.*
+import org.junit.Test
+import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.CountDownLatch
 
 class ArticleRepositoryTest {
 
-    private lateinit var articleRepository: ArticleRepository
+    private lateinit var articleRepository: DataSource
     private lateinit var latch: CountDownLatch
 
     @Before
-    fun init() {
-        latch = CountDownLatch(1)
-//      Mockをつくる
-        articleRepository = mock(ArticleRepository::class.java)
+    fun init () {
+        val retrofit = Retrofit.Builder()
+                .client(OkHttpClient())
+                .baseUrl("http://ci.nii.ac.jp")
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build()
 
-        `when`(articleRepository.fetchArticles(keyword = "android")).thenReturn(
-                Observable.just(listOf(ArticleColumn()))
-                        .singleOrError()
-        )
-        `when`(articleRepository.fetchAuthors(keyword = "android")).thenReturn(
-                Observable.just(listOf(Author()))
-                        .singleOrError()
-        )
-        `when`(articleRepository.fetchArticle(articleId = 0L)).thenReturn(
-                Observable.just(Article())
-                        .singleOrError()
-        )
-        `when`(articleRepository.fetchAuthor(authorId = 0L)).thenReturn(
-                Observable.just(Author())
-                        .singleOrError()
-        )
+        articleRepository = ArticleRepository(RemoteDataSource(retrofit))
+        latch = CountDownLatch(1)
     }
 
     @Test
@@ -47,60 +40,56 @@ class ArticleRepositoryTest {
                 .subscribeOn(Schedulers.io())
                 .subscribe { articles: List<ArticleColumn>?, t: Throwable? ->
                     articles?.run {
-                        print(articles.first())
+                        print(articles)
                         assert(articles.isNotEmpty())
-                        assert(articles.size == 1)
-                        assert(articles.contains(ArticleColumn()))
-                        latch.countDown()
                     }
-                    t?.run { doThrow(t) }
+                    t?.run { throw t }
+                    latch.countDown()
                 }
         latch.await()
     }
 
     @Test
     fun キーワードから著者を取得する() {
-        articleRepository.fetchAuthors(keyword = "android")
+        articleRepository.fetchAuthors(keyword = "鈴木")
                 .subscribeOn(Schedulers.io())
-                .subscribe { authors: List<Author>?, t: Throwable? ->
+                .subscribe { authors: List<AuthorColumn>?, t: Throwable? ->
                     authors?.run {
-                        print(authors.first())
+                        print(authors)
                         assert(authors.isNotEmpty())
-                        assert(authors.size == 1)
-                        assert(authors.contains(Author()))
-                        latch.countDown()
                     }
-                    t?.run { doThrow(t) }
+                    t?.run { throw t }
+                    latch.countDown()
                 }
         latch.await()
     }
 
     @Test
     fun 論文IDから論文を取得() {
-        articleRepository.fetchArticle(articleId = 0L)
+        articleRepository.fetchArticle(articleId = 40021450187)
                 .subscribeOn(Schedulers.io())
                 .subscribe { article: Article?, t: Throwable? ->
                     article?.run {
                         print(article)
-                        assert(article == Article())
-                        latch.countDown()
+                        assert(article != Article())
                     }
-                    t?.run { doThrow(t) }
+                    t?.run { throw t }
+                    latch.countDown()
                 }
         latch.await()
     }
 
     @Test
     fun 著者IDから著者を取得() {
-        articleRepository.fetchAuthor(authorId = 0L)
+        articleRepository.fetchAuthor(authorId = 9000006028671)
                 .subscribeOn(Schedulers.io())
-                .subscribe { author: Author?, t: Throwable? ->
+                .subscribe { author: List<Author>?, t: Throwable? ->
                     author?.run {
                         print(author)
-                        assert(author == Author())
-                        latch.countDown()
+                        assert(author.first() != Author())
                     }
-                    t?.run { doThrow(t) }
+                    t?.run { throw t }
+                    latch.countDown()
                 }
         latch.await()
     }

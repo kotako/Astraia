@@ -3,6 +3,7 @@ package io.gitub.kotako.astraia.data.source
 import io.gitub.kotako.astraia.data.Article
 import io.gitub.kotako.astraia.data.ArticleColumn
 import io.gitub.kotako.astraia.data.Author
+import io.gitub.kotako.astraia.data.AuthorColumn
 import io.reactivex.Single
 import javax.inject.Inject
 
@@ -18,11 +19,11 @@ open class ArticleRepository @Inject constructor(
         return remoteDataSource.fetchArticles(keyword = keyword, count = count, lang = lang, startIndex = startIndex, title = title, author = author, authorId = authorId, issn = issn, publisher = publisher, affiliation = affiliation, journal = journal, volumeNumber = volumeNumber, issueNumber = issueNumber, page = page, references = references, yearFrom = yearFrom, yearTo = yearTo, articleBodyAvailable = articleBodyAvailable, sortOrder = sortOrder)
     }
 
-    override fun fetchAuthor(authorId: Long): Single<Author> {
+    override fun fetchAuthor(authorId: Long): Single<List<Author>> {
         return remoteDataSource.fetchAuthor(authorId = authorId)
     }
 
-    override fun fetchAuthors(keyword: String, count: Int?, lang: String?, startIndex: Int?, sortOrder: Int?): Single<List<Author>> {
+    override fun fetchAuthors(keyword: String, count: Int?, lang: String?, startIndex: Int?, sortOrder: Int?): Single<List<AuthorColumn>> {
         return remoteDataSource.fetchAuthors(keyword = keyword, count = count, lang = lang, startIndex = startIndex, sortOrder = sortOrder)
     }
 

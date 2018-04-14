@@ -3,6 +3,7 @@ package io.gitub.kotako.astraia.data.source.remote
 import io.gitub.kotako.astraia.data.Article
 import io.gitub.kotako.astraia.data.ArticleColumn
 import io.gitub.kotako.astraia.data.Author
+import io.gitub.kotako.astraia.data.AuthorColumn
 import io.gitub.kotako.astraia.data.source.DataSource
 import io.gitub.kotako.astraia.data.source.remote.api.CiniiApi
 import io.reactivex.Single
@@ -42,18 +43,18 @@ open class RemoteDataSource @Inject constructor(
                         yearTo = yearTo,
                         articleBodyAvailable = articleBodyAvailable,
                         sort = sortOrder)
-                .map { response -> response.value }
+                .map { response -> response.body.first().articles }
                 .singleOrError()
     }
 
-    override fun fetchAuthor(authorId: Long): Single<Author> {
+    override fun fetchAuthor(authorId: Long): Single<List<Author>> {
         return retrofit.create(CiniiApi::class.java)
                 .fetchAuthor(authorId = authorId)
-                .map { response -> response.value.first() }
+                .map { response -> response.body }
                 .singleOrError()
     }
 
-    override fun fetchAuthors(keyword: String, count: Int?, lang: String?, startIndex: Int?, sortOrder: Int?): Single<List<Author>> {
+    override fun fetchAuthors(keyword: String, count: Int?, lang: String?, startIndex: Int?, sortOrder: Int?): Single<List<AuthorColumn>> {
         return retrofit.create(CiniiApi::class.java)
                 .fetchAuthors(
                         keyword = keyword,
@@ -61,7 +62,7 @@ open class RemoteDataSource @Inject constructor(
                         lang = lang,
                         startIndex = startIndex,
                         sort = sortOrder)
-                .map { response -> response.value }
+                .map { response -> response.body.first().authors }
                 .singleOrError()
     }
 }

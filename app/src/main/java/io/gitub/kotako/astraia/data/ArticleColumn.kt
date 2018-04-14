@@ -1,8 +1,6 @@
 package io.gitub.kotako.astraia.data
 
 import com.google.gson.annotations.SerializedName
-import java.util.*
-
 
 data class ArticleColumn(
         @SerializedName("@id")
@@ -13,10 +11,10 @@ data class ArticleColumn(
         val description: String = "",
 
         @SerializedName("rdfs:seeAlso")
-        private val linkJsonObject: CiniiData = CiniiData(),
+        val linkJson: Link = Link(),
 
         @SerializedName("dc:creator")
-        private val authorsData: List<CiniiData> = emptyList(),
+        val authors: List<AuthorName> = emptyList(),
 
         @SerializedName("dc:publisher")
         val publisher: String = "",
@@ -40,8 +38,13 @@ data class ArticleColumn(
         val endingPage: Int = 0,
 
         @SerializedName("prism:publicationDate")
-        val publishedAt: Date? = null
-) {
-    val linkJson: String = linkJsonObject.link
-    val authors: List<String> = authorsData.map { item -> item.value }
-}
+        val publishedAt: String = ""
+)
+
+data class AuthorName(
+        @SerializedName("@value")
+        val name: String = "",
+
+        @SerializedName("@language")
+        val lang: String = ""
+)

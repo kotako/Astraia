@@ -41,5 +41,5 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideArticleRepository(remoteDataSource: DataSource) = ArticleRepository(remoteDataSource)
+    fun provideArticleRepository(remoteDataSource: DataSource): DataSource = ArticleRepository(remoteDataSource)
 }

@@ -1,20 +1,19 @@
 package io.gitub.kotako.astraia.data
 
 import com.google.gson.annotations.SerializedName
-import java.util.*
 
 data class Article(
         @SerializedName("@id")
         val link: String = "",
 
         @SerializedName("dc:title")
-        private val titleData: CiniiData = CiniiData(),
+        val titles: List<ArticleTitle> = emptyList(),
 
         @SerializedName("dc:publisher")
-        private val publisherData: List<CiniiData> = emptyList(),
+        val publishers: List<Publisher> = emptyList(),
 
         @SerializedName("prism:publicationName")
-        private val publicationData: List<CiniiData> = emptyList(),
+        val publications: List<Publication> = emptyList(),
 
         @SerializedName("prism:issn")
         val issn: String = "",
@@ -32,13 +31,10 @@ data class Article(
         val endingPage: Int = 0,
 
         @SerializedName("prism:publicationDate")
-        val publishedAt: Date? = null,
-
-        @SerializedName("dc:description")
-        private val descriptionData: CiniiData = CiniiData(),
+        val publishedAt: String = "",
 
         @SerializedName("cinii:naid")
-        val id: Long = 0,
+        val id: Long = 0L,
 
         @SerializedName("cinii:ncid")
         val nacsisId: String = "",
@@ -53,27 +49,109 @@ data class Article(
         val citedCount: Int = 0,
 
         @SerializedName("dc:source")
-        private val sourceData: List<CiniiData> = emptyList(),
+        val sources: List<Source> = emptyList(),
 
         @SerializedName("dcterms:isPartOf")
-        val jounal: CiniiData = CiniiData(),
+        val jounal: Journal = Journal(),
 
         @SerializedName("rdfs:seeAlso")
-        val relatedLinks: List<CiniiData> = emptyList(),
+        val relatedLinks: List<Link> = emptyList(),
 
         @SerializedName("foaf:topic")
-        val topics: List<CiniiData> = emptyList(),
+        val topics: List<Topic> = emptyList(),
 
         @SerializedName("foaf:depiction")
-        private val imageData: CiniiData = CiniiData(),
+        val image: Link = Link(),
 
         @SerializedName("foaf:maker")
-        val authors: List<Author> = emptyList()
-) {
-    val title: String = titleData.value
-    val description: String = descriptionData.value
-    val publisher: List<String> = publisherData.map { item -> item.value }
-    val publication: List<String> = publicationData.map { item -> item.value }
-    val source: List<String> = sourceData.map { item -> item.value }
-    val imageUrl: String = imageData.link
-}
+        val authors: List<AuthorLink> = emptyList()
+)
+
+data class ArticleTitle(
+        @SerializedName("@value")
+        val name: String = "",
+
+        @SerializedName("@language")
+        val lang: String = ""
+)
+
+data class Publication(
+        @SerializedName("@value")
+        val name: String = "",
+
+        @SerializedName("@language")
+        val lang: String = ""
+)
+
+data class Publisher (
+        @SerializedName("@value")
+        val name: String = "",
+
+        @SerializedName("@language")
+        val lang: String = ""
+)
+
+data class Source(
+        @SerializedName("@value")
+        val name: String = ""
+)
+
+data class Journal(
+        @SerializedName("@id")
+        val link: String = "",
+
+        @SerializedName("dc:title")
+        val title: String = ""
+)
+
+data class AuthorLink(
+        @SerializedName("@id")
+        val link: String = "",
+
+        @SerializedName("foaf:name")
+        val authorData: List<AuthorOverView> = emptyList()
+)
+
+data class AuthorOverView(
+        @SerializedName("@value")
+        val name: String = "",
+
+        @SerializedName("@language")
+        val lang: String = "",
+
+        @SerializedName("con:organization")
+        val organizations: List<Organization> = emptyList()
+)
+
+data class Organization(
+        @SerializedName("@id")
+        val link: String = "",
+
+        @SerializedName("foaf:name")
+        val names: List<OrganizationName> = emptyList()
+)
+
+data class OrganizationName(
+        @SerializedName("@value")
+        val name: String = "",
+
+        @SerializedName("@language")
+        val lang: String = ""
+)
+
+
+data class Topic(
+        @SerializedName("@id")
+        val link: String = "",
+
+        @SerializedName("dc:title")
+        val titles: List<TopicTitle> = emptyList()
+)
+
+data class TopicTitle(
+        @SerializedName("@value")
+        val title: String = "",
+
+        @SerializedName("@language")
+        val lang: String = ""
+)

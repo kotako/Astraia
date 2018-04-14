@@ -3,6 +3,7 @@ package io.gitub.kotako.astraia.data.source
 import io.gitub.kotako.astraia.data.Article
 import io.gitub.kotako.astraia.data.ArticleColumn
 import io.gitub.kotako.astraia.data.Author
+import io.gitub.kotako.astraia.data.AuthorColumn
 import io.reactivex.Single
 
 interface DataSource {
@@ -32,7 +33,7 @@ interface DataSource {
                      count: Int? = null,
                      lang: String? = null,
                      startIndex: Int? = null,
-                     sortOrder: Int? = null): Single<List<Author>>
+                     sortOrder: Int? = null): Single<List<AuthorColumn>>
 
-    fun fetchAuthor(authorId: Long): Single<Author>
+    fun fetchAuthor(authorId: Long): Single<List<Author>>
 }
