@@ -7,6 +7,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
+
 android {
     compileSdkVersion 27
     defaultConfig {
@@ -16,6 +18,11 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    testOptions {
+        unitTests {
+            returnDefaultValues true
+        }
     }
     buildTypes {
         release {
@@ -44,4 +51,13 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
     implementation 'io.reactivex.rxjava2:rxjava:2.1.12'
+
+//  DI
+    implementation 'com.google.dagger:dagger:2.15'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.15'
+    kapt 'com.google.dagger:dagger-compiler:2.15'
+    kaptTest 'com.google.dagger:dagger-compiler:2.15'
+
+//  Test
+    testImplementation 'org.mockito:mockito-core:2.18.0'
 }

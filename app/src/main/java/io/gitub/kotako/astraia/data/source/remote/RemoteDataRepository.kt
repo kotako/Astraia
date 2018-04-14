@@ -6,18 +6,12 @@ import io.gitub.kotako.astraia.data.Author
 import io.gitub.kotako.astraia.data.source.DataSource
 import io.reactivex.Single
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Inject
+import javax.inject.Named
 
-class RemoteDataRepository(): DataSource {
-
-    val url = "http://ci.nii.ac.jp"
-
-    val retrofit = Retrofit.Builder()
-            .baseUrl(url)
-            .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .build()
+open class RemoteDataRepository @Inject constructor(
+        @Named("retrofitForCinii") private val retrofit: Retrofit
+): DataSource {
 
     override fun fetchArticle(articleId: Long): Single<Article> {
         return retrofit.create(CiniiApi::class.java)
