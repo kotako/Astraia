@@ -2,6 +2,7 @@ package io.gitub.kotako.astraia
 
 import io.gitub.kotako.astraia.data.Entity.Article
 import io.gitub.kotako.astraia.data.Entity.Author
+import io.gitub.kotako.astraia.data.Query
 import io.gitub.kotako.astraia.data.source.ArticleRepository
 import io.gitub.kotako.astraia.data.source.DataSource
 import io.gitub.kotako.astraia.data.source.remote.RemoteDataSource
@@ -36,8 +37,8 @@ class ArticleRepositoryTest {
 
     @Test
     fun キーワードから論文を取得する() {
-        articleRepository.fetchArticles(keyword = "android")
-                .subscribeOn(Schedulers.io())
+    articleRepository.fetchArticles(Query(keyword = "android"))
+            .subscribeOn(Schedulers.io())
                 .subscribe { articles: List<Article>?, t: Throwable? ->
                     articles?.run {
                         print(articles)
@@ -51,7 +52,7 @@ class ArticleRepositoryTest {
 
     @Test
     fun キーワードから著者を取得する() {
-        articleRepository.fetchAuthors(keyword = "鈴木")
+        articleRepository.fetchAuthors(Query(keyword = "鈴木"))
                 .subscribeOn(Schedulers.io())
                 .subscribe { authors: List<Author>?, t: Throwable? ->
                     authors?.run {

@@ -2,6 +2,7 @@ package io.gitub.kotako.astraia.data.source.remote
 
 import io.gitub.kotako.astraia.data.Entity.Article
 import io.gitub.kotako.astraia.data.Entity.Author
+import io.gitub.kotako.astraia.data.Query
 import io.gitub.kotako.astraia.data.source.DataSource
 import io.gitub.kotako.astraia.data.source.remote.api.CiniiApi
 import io.reactivex.Single
@@ -19,28 +20,28 @@ open class RemoteDataSource @Inject constructor(
                 .singleOrError()
     }
 
-    override fun fetchArticles(keyword: String, count: Int?, lang: String?, startIndex: Int?, title: String?, author: String?, authorId: Long?, issn: String?, publisher: String?, affiliation: String?, journal: String?, volumeNumber: Int?, issueNumber: Int?, page: Int?, references: String?, yearFrom: Int?, yearTo: Int?, articleBodyAvailable: Int?, sortOrder: Int?): Single<List<Article>> {
+    override fun fetchArticles(q: Query): Single<List<Article>> {
         return retrofit.create(CiniiApi::class.java)
                 .fetchArticles(
-                        keyword = keyword,
-                        count = count,
-                        lang = lang,
-                        startIndex = startIndex,
-                        title = title,
-                        author = author,
-                        authorId = authorId,
-                        issn = issn,
-                        publisher = publisher,
-                        affiliation = affiliation,
-                        journal = journal,
-                        volumeNumber = volumeNumber,
-                        issueNumber = issueNumber,
-                        page = page,
-                        references = references,
-                        yearFrom = yearFrom,
-                        yearTo = yearTo,
-                        articleBodyAvailable = articleBodyAvailable,
-                        sort = sortOrder)
+                        keyword = q.keyword,
+                        count = q.count,
+                        lang = q.lang,
+                        startIndex = q.startIndex,
+                        title = q.title,
+                        author = q.author,
+                        authorId = q.authorId,
+                        issn = q.issn,
+                        publisher = q.publisher,
+                        affiliation = q.affilication,
+                        journal = q.journal,
+                        volumeNumber = null,
+                        issueNumber = null,
+                        page = q.page,
+                        references = null,
+                        yearFrom = q.yearFrom,
+                        yearTo = q.yearTo,
+                        articleBodyAvailable = q.articleBodyAvailable,
+                        sort = q.sort)
                 .map { response -> response.body.first().articles.map { article -> article as Article } }
                 .singleOrError()
     }
@@ -52,14 +53,14 @@ open class RemoteDataSource @Inject constructor(
                 .singleOrError()
     }
 
-    override fun fetchAuthors(keyword: String, count: Int?, lang: String?, startIndex: Int?, sortOrder: Int?): Single<List<Author>> {
+    override fun fetchAuthors(q: Query): Single<List<Author>> {
         return retrofit.create(CiniiApi::class.java)
                 .fetchAuthors(
-                        keyword = keyword,
-                        count = count,
-                        lang = lang,
-                        startIndex = startIndex,
-                        sort = sortOrder)
+                        keyword = q.keyword,
+                        count = q.count,
+                        lang = q.lang,
+                        startIndex = q.startIndex,
+                        sort = q.sort)
                 .map { response -> response.body.first().authors.map { author -> author as Author } }
                 .singleOrError()
     }

@@ -2,6 +2,7 @@ package io.gitub.kotako.astraia
 
 import io.gitub.kotako.astraia.data.Entity.Article
 import io.gitub.kotako.astraia.data.Entity.Author
+import io.gitub.kotako.astraia.data.Query
 import io.gitub.kotako.astraia.data.source.ArticleRepository
 import io.gitub.kotako.astraia.data.source.remote.response.ArticleColumnResponseEntity
 import io.gitub.kotako.astraia.data.source.remote.response.ArticleResponseEntity
@@ -26,11 +27,11 @@ class ArticleRepositoryMockTest {
 //      Mockをつくる
         articleRepository = mock(ArticleRepository::class.java)
 
-        `when`(articleRepository.fetchArticles(keyword = "android")).thenReturn(
+        `when`(articleRepository.fetchArticles(Query(keyword = "android"))).thenReturn(
                 Observable.just(listOf(ArticleColumnResponseEntity() as Article))
                         .singleOrError()
         )
-        `when`(articleRepository.fetchAuthors(keyword = "android")).thenReturn(
+        `when`(articleRepository.fetchAuthors(Query(keyword = "android"))).thenReturn(
                 Observable.just(listOf(AuthorColumnResponseEntity() as Author))
                         .singleOrError()
         )
@@ -46,7 +47,7 @@ class ArticleRepositoryMockTest {
 
     @Test
     fun キーワードから論文を取得する() {
-        articleRepository.fetchArticles(keyword = "android")
+        articleRepository.fetchArticles(Query(keyword = "android"))
                 .subscribeOn(Schedulers.io())
                 .subscribe { articles: List<Article>?, t: Throwable? ->
                     articles?.run {
@@ -63,7 +64,7 @@ class ArticleRepositoryMockTest {
 
     @Test
     fun キーワードから著者を取得する() {
-        articleRepository.fetchAuthors(keyword = "android")
+        articleRepository.fetchAuthors(Query(keyword = "android"))
                 .subscribeOn(Schedulers.io())
                 .subscribe { authors: List<Author>?, t: Throwable? ->
                     authors?.run {
