@@ -1,9 +1,12 @@
 package io.gitub.kotako.astraia
 
-import io.gitub.kotako.astraia.data.*
+import io.gitub.kotako.astraia.data.Entity.Article
+import io.gitub.kotako.astraia.data.Entity.Author
 import io.gitub.kotako.astraia.data.source.ArticleRepository
 import io.gitub.kotako.astraia.data.source.DataSource
 import io.gitub.kotako.astraia.data.source.remote.RemoteDataSource
+import io.gitub.kotako.astraia.data.source.remote.response.ArticleResponseEntity
+import io.gitub.kotako.astraia.data.source.remote.response.AuthorResponseEntity
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import org.junit.Before
@@ -35,7 +38,7 @@ class ArticleRepositoryTest {
     fun キーワードから論文を取得する() {
         articleRepository.fetchArticles(keyword = "android")
                 .subscribeOn(Schedulers.io())
-                .subscribe { articles: List<ArticleEntity>?, t: Throwable? ->
+                .subscribe { articles: List<Article>?, t: Throwable? ->
                     articles?.run {
                         print(articles)
                         assert(articles.isNotEmpty())
@@ -50,7 +53,7 @@ class ArticleRepositoryTest {
     fun キーワードから著者を取得する() {
         articleRepository.fetchAuthors(keyword = "鈴木")
                 .subscribeOn(Schedulers.io())
-                .subscribe { authors: List<AuthorColumn>?, t: Throwable? ->
+                .subscribe { authors: List<Author>?, t: Throwable? ->
                     authors?.run {
                         print(authors)
                         assert(authors.isNotEmpty())
@@ -65,10 +68,10 @@ class ArticleRepositoryTest {
     fun 論文IDから論文を取得() {
         articleRepository.fetchArticle(articleId = 40021450187)
                 .subscribeOn(Schedulers.io())
-                .subscribe { article: ArticleEntity?, t: Throwable? ->
+                .subscribe { article: Article?, t: Throwable? ->
                     article?.run {
                         print(article)
-                        assert(article != Article())
+                        assert(article != ArticleResponseEntity())
                     }
                     t?.run { throw t }
                     latch.countDown()
@@ -83,7 +86,7 @@ class ArticleRepositoryTest {
                 .subscribe { author: List<Author>?, t: Throwable? ->
                     author?.run {
                         print(author)
-                        assert(author.first() != Author())
+                        assert(author.first() != AuthorResponseEntity())
                     }
                     t?.run { throw t }
                     latch.countDown()

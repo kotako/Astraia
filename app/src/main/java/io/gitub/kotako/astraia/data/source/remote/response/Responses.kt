@@ -1,10 +1,6 @@
 package io.gitub.kotako.astraia.data.source.remote.response
 
 import com.google.gson.annotations.SerializedName
-import io.gitub.kotako.astraia.data.Article
-import io.gitub.kotako.astraia.data.ArticleColumn
-import io.gitub.kotako.astraia.data.Author
-import io.gitub.kotako.astraia.data.AuthorColumn
 
 interface Response {
     val link: String
@@ -21,7 +17,7 @@ data class ArticlesResponse(
 
 data class ArticlesResponseBody(
         @SerializedName("items")
-        val articles: List<ArticleColumn> = emptyList()
+        val articles: List<ArticleColumnResponseEntity> = emptyList()
 )
 
 data class ArticleResponse(
@@ -29,7 +25,7 @@ data class ArticleResponse(
         override val link: String = "",
 
         @SerializedName("@graph")
-        override val body: List<Article> = emptyList()
+        override val body: List<ArticleResponseEntity> = emptyList()
 ) : Response
 
 data class AuthorsResponse(
@@ -42,7 +38,7 @@ data class AuthorsResponse(
 
 data class AuthorResponseBody(
         @SerializedName("items")
-        val authors: List<AuthorColumn> = emptyList()
+        val authors: List<AuthorColumnResponseEntity> = emptyList()
 )
 
 data class AuthorResponse(
@@ -50,6 +46,6 @@ data class AuthorResponse(
         override val link: String = "",
 
         @SerializedName("@graph")
-        override val body: List<Author> = emptyList()
+        override val body: List<AuthorResponseEntity> = emptyList()
 ) : Response
 
