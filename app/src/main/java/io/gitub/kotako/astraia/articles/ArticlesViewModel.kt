@@ -15,13 +15,13 @@ class ArticlesViewModel @Inject constructor(
 ): ViewModel() {
 
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
+    private var navigator: ArticlesNavigator? = null
     var articles: MutableList<Article> = mutableListOf()
     var isLoading: Boolean = false
     var query: Query = Query(keyword = "")
 
-    fun init() {
-        articles = mutableListOf()
-        isLoading = false
+    fun setNavigator(articlesNavigator: ArticlesNavigator) {
+        navigator = articlesNavigator
     }
 
     fun fetchArticles() {
@@ -36,15 +36,18 @@ class ArticlesViewModel @Inject constructor(
         )
     }
 
-    fun startArticleDetailActivity(){}
+    fun startArticleDetailActivity(){
+        navigator?.onStartArticleDetail()
+    }
 
     fun addFavorite() {}
 
     fun addReadLator() {}
 
     override fun onCleared() {
-        super.onCleared()
         compositeDisposable.clear()
+        navigator = null
+        super.onCleared()
     }
 
 }

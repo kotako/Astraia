@@ -6,6 +6,7 @@ import io.gitub.kotako.astraia.data.Query
 import io.gitub.kotako.astraia.data.source.ArticleRepository
 import io.gitub.kotako.astraia.data.source.remote.RemoteDataSource
 import io.gitub.kotako.astraia.data.source.remote.response.ArticleResponseEntity
+import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.plugins.RxAndroidPlugins
 import io.reactivex.plugins.RxJavaPlugins
@@ -21,6 +22,7 @@ import org.robolectric.RobolectricTestRunner
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.IOException
 
 @RunWith(RobolectricTestRunner::class)
 class ArticlesViewModelTest {
@@ -35,9 +37,6 @@ class ArticlesViewModelTest {
         RxAndroidPlugins.setMainThreadSchedulerHandler { _ -> Schedulers.trampoline() }
 
         repository = mock(ArticleRepository::class.java)
-        `when`(repository.fetchArticles(query)).thenReturn(
-                Single.just(listOf(ArticleResponseEntity() as Article))
-        )
     }
 
     @After
@@ -48,6 +47,10 @@ class ArticlesViewModelTest {
 
     @Test
     fun 論文一覧のモックを取得する() {
+        `when`(repository.fetchArticles(query)).thenReturn(
+                Single.just(listOf(ArticleResponseEntity() as Article))
+        )
+
         viewModel = ArticlesViewModel(repository)
         viewModel.query = query
 
@@ -56,6 +59,7 @@ class ArticlesViewModelTest {
         print(viewModel.articles)
         assertEquals(viewModel.articles, listOf(ArticleResponseEntity() as Article))
         assert(viewModel.articles.size == 1)
+        assert(!viewModel.isLoading)
     }
 
     @Test
@@ -74,9 +78,21 @@ class ArticlesViewModelTest {
 
         print(viewModel.articles)
         assert(viewModel.articles.isNotEmpty())
+        assert(!viewModel.isLoading)
     }
 
     @Test
     fun 論文一覧取得中にネットワークエラーが発生したら知らせる() {
+        `when`(repository.fetchArticles(query)).thenReturn(
+                Observable.error<List<Article>>(IOException("何かしらのエラー"))
+                        .singleOrError()
+        )
+
+        viewModel = ArticlesViewModel(repository)
+        viewModel.query = query
+        viewModel.fetchArticles()
+
+        assert(viewModel.articles.isEmpty())
+        assert(!viewModel.isLoading)
     }
 }
