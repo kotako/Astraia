@@ -1,7 +1,9 @@
 package io.gitub.kotako.astraia.data.Entity
 
-interface Topic {
-    val link: String
-    val title: String?
-    val titleInEnglish: String?
+import io.realm.RealmObject
+
+open class Topic: RealmObject() {
+    open var link: String? = null
+    open var title: String? = null
+    open var titleInEnglish: String? = null
 }
