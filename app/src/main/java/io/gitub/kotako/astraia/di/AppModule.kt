@@ -6,7 +6,10 @@ import dagger.Module
 import dagger.Provides
 import io.gitub.kotako.astraia.data.source.ArticleRepository
 import io.gitub.kotako.astraia.data.source.DataSource
+import io.gitub.kotako.astraia.data.source.local.LocalDataSource
 import io.gitub.kotako.astraia.data.source.remote.RemoteDataSource
+import io.realm.Realm
+import io.realm.RealmConfiguration
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -41,5 +44,21 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideArticleRepository(remoteDataSource: DataSource): DataSource = ArticleRepository(remoteDataSource)
+    fun provideArticleRepository(remoteDataSource: DataSource, localDataSource: DataSource): DataSource = ArticleRepository(remoteDataSource, localDataSource)
+
+    @Provides
+    @Singleton
+    fun provideRealmConfig(): RealmConfiguration =
+            RealmConfiguration.Builder()
+                    .name("kotako.astraia")
+                    .deleteRealmIfMigrationNeeded()
+                    .build()
+
+    @Provides
+    @Singleton
+    fun provideRealm(realmConfig: RealmConfiguration): Realm = Realm.getInstance(realmConfig)
+
+    @Provides
+    @Singleton
+    fun provideLocalDataSource(realm: Realm): DataSource = LocalDataSource(realm)
 }
