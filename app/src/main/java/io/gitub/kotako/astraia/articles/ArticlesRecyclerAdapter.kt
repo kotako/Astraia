@@ -6,11 +6,12 @@ import android.view.ViewGroup
 import io.gitub.kotako.astraia.BR
 import io.gitub.kotako.astraia.R
 import io.gitub.kotako.astraia.data.Entity.Article
+import java.lang.ref.WeakReference
 import javax.inject.Inject
 
 class ArticlesRecyclerAdapter(
         private val articles: List<Article>,
-        private val navigator: ArticleItemNavigator
+        private val navigator: WeakReference<ArticleItemNavigator>
 ): RecyclerView.Adapter<ArticleViewHolder>() {
 
     @Inject
@@ -24,7 +25,7 @@ class ArticlesRecyclerAdapter(
         holder.binding.authorsTextView.text = articles[position].authors?.joinToString (
                 separator = ", ", transform = { author -> author?.name ?: "Unknown" }
         )
-        viewModel.setNavigator(navigator)
+        if (navigator.get() != null) viewModel.setNavigator(navigator.get()!!)
         holder.binding.setVariable(BR.viewModel, viewModel)
     }
 

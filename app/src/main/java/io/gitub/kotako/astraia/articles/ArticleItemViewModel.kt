@@ -15,6 +15,7 @@ class ArticleItemViewModel @Inject constructor(
 
     private val compositeDisposable = CompositeDisposable()
     private var navigator: WeakReference<ArticleItemNavigator>? = null
+
     val isReadLaterAdded: MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>().apply { postValue(false) }
     }

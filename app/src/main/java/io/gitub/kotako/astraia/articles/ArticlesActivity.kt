@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import io.gitub.kotako.astraia.R
 import javax.inject.Inject
 
-class ArticlesActivity: AppCompatActivity(), ArticlesNavigator, ArticleItemNavigator {
+class ArticlesActivity: AppCompatActivity(), ArticlesNavigator {
 
     @Inject
     lateinit var viewModel: ArticlesViewModel
@@ -22,9 +22,5 @@ class ArticlesActivity: AppCompatActivity(), ArticlesNavigator, ArticleItemNavig
             add(R.id.container, fragment)
             commit()
         }
-    }
-
-    override fun onStartArticleDetail() {
-        // start activity
     }
 }
