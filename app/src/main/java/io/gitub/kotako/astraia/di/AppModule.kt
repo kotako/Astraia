@@ -4,6 +4,8 @@ import android.app.Application
 import android.content.Context
 import dagger.Module
 import dagger.Provides
+import io.gitub.kotako.astraia.articles.ArticleItemViewModel
+import io.gitub.kotako.astraia.articles.ArticlesViewModel
 import io.gitub.kotako.astraia.data.source.ArticleRepository
 import io.gitub.kotako.astraia.data.source.DataSource
 import io.gitub.kotako.astraia.data.source.local.LocalDataSource
@@ -44,7 +46,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideArticleRepository(remoteDataSource: DataSource, localDataSource: DataSource): DataSource = ArticleRepository(remoteDataSource, localDataSource)
+    fun provideArticleRepository(remoteDataSource: DataSource, localDataSource: DataSource): ArticleRepository = ArticleRepository(remoteDataSource, localDataSource)
 
     @Provides
     @Singleton
@@ -61,4 +63,11 @@ object AppModule {
     @Provides
     @Singleton
     fun provideLocalDataSource(realm: Realm): DataSource = LocalDataSource(realm)
+
+    @Provides
+    @Singleton
+    fun provideArticlesViewModel(repository: ArticleRepository): ArticlesViewModel = ArticlesViewModel(repository)
+
+    @Provides
+    fun provideArticleItemViewModel(repository: ArticleRepository): ArticleItemViewModel = ArticleItemViewModel(repository)
 }

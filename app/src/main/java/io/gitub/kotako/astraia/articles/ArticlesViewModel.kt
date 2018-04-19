@@ -18,11 +18,11 @@ class ArticlesViewModel @Inject constructor(
 
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
     private var navigator: ArticlesNavigator? = null
-    private var query: Query = Query(keyword = "")
-    private val articles: LiveData<MutableList<Article>> by lazy {
+    var query: Query = Query(keyword = "")
+    val articles: LiveData<MutableList<Article>> by lazy {
         MutableLiveData<MutableList<Article>>().apply { postValue(mutableListOf()) }
     }
-    private val isLoading: MutableLiveData<Boolean> by lazy {
+    val isLoading: MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>().apply { postValue(false) }
     }
 
@@ -45,12 +45,6 @@ class ArticlesViewModel @Inject constructor(
                 .subscribe({ t: List<Article> -> articles.value?.addAll(t) }, defaultErrorHandler())
         )
     }
-
-    fun startArticleDetailActivity(){
-        navigator?.onStartArticleDetail()
-    }
-
-    fun addReadLator() {}
 
     override fun onCleared() {
         compositeDisposable.clear()

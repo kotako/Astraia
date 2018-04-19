@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <data></data>
+    <data>
+        <variable
+            name="viewModel"
+            type="io.gitub.kotako.astraia.articles.ArticleItemViewModel" />
+        <variable
+            name="article"
+            type="io.gitub.kotako.astraia.data.Entity.Article" />
+    </data>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingBottom="4dp"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        android:paddingBottom="4dp"
-        android:paddingTop="4dp">
+        android:paddingTop="4dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:onClick="@{viewModel.articleClicked()}">
 
         <TextView
             android:id="@+id/titleTextView"
@@ -23,10 +31,10 @@
             android:id="@+id/authorsTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_people_black"
             android:layout_below="@id/titleTextView"
-            android:drawableTint="@color/gray"
             android:drawablePadding="4dp"
+            android:drawableStart="@drawable/ic_people_black"
+            android:drawableTint="@color/gray"
             android:gravity="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
@@ -35,22 +43,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/authorsTextView"
+            android:drawablePadding="4dp"
             android:drawableStart="@drawable/ic_comment_black"
             android:drawableTint="@color/gray"
-            android:drawablePadding="4dp"
             android:gravity="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
         <ImageButton
+            style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:tint="@color/gray"
-            android:layout_marginEnd="8dp"
-            android:layout_alignParentEnd="true"
             android:layout_above="@id/descriptionTextView"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:src="@drawable/ic_turned_in"
-            android:contentDescription="@string/read_later" />
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="@string/read_later"
+            android:onClick="@{viewModel.readLaterClicked()}"
+            android:src="@{viewModel.isReadLaterAdded() ? @drawable/ic_turned_in_red : @drawable/ic_turned_in}" />
 
     </RelativeLayout>
 </layout>

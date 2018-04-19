@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import io.gitub.kotako.astraia.R
 import javax.inject.Inject
 
-class ArticlesActivity: AppCompatActivity(), ArticlesNavigator {
+class ArticlesActivity: AppCompatActivity(), ArticlesNavigator, ArticleItemNavigator {
 
     @Inject
     lateinit var viewModel: ArticlesViewModel
