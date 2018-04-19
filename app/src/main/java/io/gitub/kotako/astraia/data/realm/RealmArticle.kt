@@ -7,6 +7,7 @@ import io.realm.annotations.PrimaryKey
 open class RealmArticle(
         @PrimaryKey
         var id: Long? = null,
+        var group: String? = null,
         var link: String? = null,
         var linkJson: String? = null,
         var title: String? = null,

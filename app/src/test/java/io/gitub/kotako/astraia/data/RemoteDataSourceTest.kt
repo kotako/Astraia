@@ -1,4 +1,4 @@
-package io.gitub.kotako.astraia
+package io.gitub.kotako.astraia.data
 
 import io.gitub.kotako.astraia.data.Entity.Article
 import io.gitub.kotako.astraia.data.Entity.Author
@@ -16,7 +16,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.CountDownLatch
 
-class ArticleRemoteSourceTest {
+class RemoteDataSourceTest {
 
     private lateinit var remoteDataSource: DataSource
     private lateinit var latch: CountDownLatch

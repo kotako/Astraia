@@ -1,4 +1,4 @@
-package io.gitub.kotako.astraia
+package io.gitub.kotako.astraia.data
 
 import io.gitub.kotako.astraia.data.Entity.Article
 import io.gitub.kotako.astraia.data.Entity.Author

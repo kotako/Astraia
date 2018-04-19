@@ -3,6 +3,7 @@ package io.gitub.kotako.astraia.data.source.local
 import io.gitub.kotako.astraia.data.Entity.Article
 import io.gitub.kotako.astraia.data.Entity.Author
 import io.gitub.kotako.astraia.data.realm.RealmArticle
+import io.gitub.kotako.astraia.data.realm.RealmGroup
 import io.gitub.kotako.astraia.data.source.Query
 import io.gitub.kotako.astraia.data.source.DataSource
 import io.gitub.kotako.astraia.data.source.LiveRealmData
@@ -35,12 +36,13 @@ class LocalDataSource @Inject constructor(
         var result: Completable = Completable.complete()
         val realmArticle = RealmArticle().apply {
             id = article.id
+            group = RealmGroup.Favorite.name
             link = article.link
             linkJson = article.linkJson
             title = article.title
             titleInEnglish = article.titleInEnglish
             description = article.description
-            authors = article.authors?.map { author -> author?.name } as RealmList<String?>
+            authors = article.authors?.map { author -> author?.name } as RealmList<String?>?
         }
         realmClient.executeTransactionAsync(
                 { transaction: Realm -> transaction.copyToRealmOrUpdate(realmArticle) },
@@ -53,12 +55,13 @@ class LocalDataSource @Inject constructor(
         var result: Completable = Completable.complete()
         val realmArticle = RealmArticle().apply {
             id = article.id
+            group = RealmGroup.ReadLater.name
             link = article.link
             linkJson = article.linkJson
             title = article.title
             titleInEnglish = article.titleInEnglish
             description = article.description
-            authors = article.authors?.map { author -> author?.name } as RealmList<String?>
+            authors = article.authors?.map { author -> author?.name } as RealmList<String?>?
         }
         realmClient.executeTransactionAsync(
                 { transition: Realm -> transition.copyToRealmOrUpdate(realmArticle) },
@@ -68,14 +71,14 @@ class LocalDataSource @Inject constructor(
     }
 
     override fun readLatorArticles(): Single<List<RealmArticle>> =
-            Single.just(realmClient.copyFromRealm(realmClient.where(RealmArticle::class.java).findAllAsync()))
+            Single.just(realmClient.copyFromRealm(realmClient.where(RealmArticle::class.java).equalTo("group", RealmGroup.ReadLater.name).findAllAsync()))
 
     override fun favoriteArticles(): Single<List<RealmArticle>> =
-            Single.just(realmClient.copyFromRealm(realmClient.where(RealmArticle::class.java).findAllAsync()))
+            Single.just(realmClient.copyFromRealm(realmClient.where(RealmArticle::class.java).equalTo("group", RealmGroup.Favorite.name).findAllAsync()))
 
     override fun readLatorArticlesLiveData(): Single<LiveRealmData<RealmArticle>> =
-            Single.just(LiveRealmData(realmClient.where(RealmArticle::class.java).findAllAsync()))
+            Single.just(LiveRealmData(realmClient.where(RealmArticle::class.java).equalTo("group", RealmGroup.ReadLater.name).findAllAsync()))
 
     override fun favoriteArticlesLiveData(): Single<LiveRealmData<RealmArticle>> =
-            Single.just(LiveRealmData(realmClient.where(RealmArticle::class.java).findAllAsync()))
+            Single.just(LiveRealmData(realmClient.where(RealmArticle::class.java).equalTo("group", RealmGroup.Favorite.name).findAllAsync()))
 }
