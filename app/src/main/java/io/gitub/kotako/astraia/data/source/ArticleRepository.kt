@@ -2,10 +2,7 @@ package io.gitub.kotako.astraia.data.source
 
 import io.gitub.kotako.astraia.data.Entity.Article
 import io.gitub.kotako.astraia.data.Entity.Author
-import io.gitub.kotako.astraia.data.Query
-import io.gitub.kotako.astraia.data.realmObject.FavoriteArticle
-import io.gitub.kotako.astraia.data.realmObject.LiveRealmData
-import io.gitub.kotako.astraia.data.realmObject.ReadLatorArticle
+import io.gitub.kotako.astraia.data.realm.RealmArticle
 import io.reactivex.Completable
 import io.reactivex.Single
 import javax.inject.Inject
@@ -39,19 +36,19 @@ open class ArticleRepository @Inject constructor(
         return localDataSource.addReadLatorArticle(article)
     }
 
-    override fun favoriteArticles(): Single<List<Article>> {
+    override fun favoriteArticles(): Single<List<RealmArticle>> {
         return localDataSource.favoriteArticles()
     }
 
-    override fun readLatorArticles(): Single<List<Article>> {
+    override fun readLatorArticles(): Single<List<RealmArticle>> {
         return localDataSource.readLatorArticles()
     }
 
-    override fun favoriteArticlesLiveData(): Single<LiveRealmData<FavoriteArticle>> {
+    override fun favoriteArticlesLiveData(): Single<LiveRealmData<RealmArticle>> {
         return localDataSource.favoriteArticlesLiveData()
     }
 
-    override fun readLatorArticlesLiveData(): Single<LiveRealmData<ReadLatorArticle>> {
+    override fun readLatorArticlesLiveData(): Single<LiveRealmData<RealmArticle>> {
         return localDataSource.readLatorArticlesLiveData()
     }
 }

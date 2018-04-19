@@ -2,8 +2,9 @@ package io.gitub.kotako.astraia
 
 import io.gitub.kotako.astraia.articles.ArticlesViewModel
 import io.gitub.kotako.astraia.data.Entity.Article
-import io.gitub.kotako.astraia.data.Query
+import io.gitub.kotako.astraia.data.source.Query
 import io.gitub.kotako.astraia.data.source.ArticleRepository
+import io.gitub.kotako.astraia.data.source.local.LocalDataSource
 import io.gitub.kotako.astraia.data.source.remote.RemoteDataSource
 import io.gitub.kotako.astraia.data.source.remote.response.ArticleResponseEntity
 import io.reactivex.Observable
@@ -11,6 +12,7 @@ import io.reactivex.Single
 import io.reactivex.android.plugins.RxAndroidPlugins
 import io.reactivex.plugins.RxJavaPlugins
 import io.reactivex.schedulers.Schedulers
+import io.realm.Realm
 import okhttp3.OkHttpClient
 import org.junit.After
 import org.junit.Before
@@ -70,7 +72,10 @@ class ArticlesViewModelTest {
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build()
-        repository = ArticleRepository(RemoteDataSource(retrofit))
+
+        val realm = Realm.getDefaultInstance()
+
+        repository = ArticleRepository(RemoteDataSource(retrofit), LocalDataSource(realm))
         viewModel = ArticlesViewModel(repository)
         viewModel.query = query
 

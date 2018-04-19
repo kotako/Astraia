@@ -2,14 +2,14 @@ package io.gitub.kotako.astraia.data.source.local
 
 import io.gitub.kotako.astraia.data.Entity.Article
 import io.gitub.kotako.astraia.data.Entity.Author
-import io.gitub.kotako.astraia.data.Query
-import io.gitub.kotako.astraia.data.realmObject.FavoriteArticle
-import io.gitub.kotako.astraia.data.realmObject.LiveRealmData
-import io.gitub.kotako.astraia.data.realmObject.ReadLatorArticle
+import io.gitub.kotako.astraia.data.realm.RealmArticle
+import io.gitub.kotako.astraia.data.source.Query
 import io.gitub.kotako.astraia.data.source.DataSource
+import io.gitub.kotako.astraia.data.source.LiveRealmData
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.realm.Realm
+import io.realm.RealmList
 import javax.inject.Inject
 
 class LocalDataSource @Inject constructor(
@@ -33,8 +33,17 @@ class LocalDataSource @Inject constructor(
 
     override fun addFavoriteArticle(article: Article): Completable {
         var result: Completable = Completable.complete()
+        val realmArticle = RealmArticle().apply {
+            id = article.id
+            link = article.link
+            linkJson = article.linkJson
+            title = article.title
+            titleInEnglish = article.titleInEnglish
+            description = article.description
+            authors = article.authors?.map { author -> author?.name } as RealmList<String?>
+        }
         realmClient.executeTransactionAsync(
-                { transaction: Realm -> transaction.copyToRealmOrUpdate(article as FavoriteArticle) },
+                { transaction: Realm -> transaction.copyToRealmOrUpdate(realmArticle) },
                 { error: Throwable -> result = Completable.error(error) }
         )
         return result
@@ -42,32 +51,31 @@ class LocalDataSource @Inject constructor(
 
     override fun addReadLatorArticle(article: Article): Completable {
         var result: Completable = Completable.complete()
+        val realmArticle = RealmArticle().apply {
+            id = article.id
+            link = article.link
+            linkJson = article.linkJson
+            title = article.title
+            titleInEnglish = article.titleInEnglish
+            description = article.description
+            authors = article.authors?.map { author -> author?.name } as RealmList<String?>
+        }
         realmClient.executeTransactionAsync(
-                { transition: Realm -> transition.copyToRealmOrUpdate(article as ReadLatorArticle) },
+                { transition: Realm -> transition.copyToRealmOrUpdate(realmArticle) },
                 { error: Throwable? -> result = Completable.error(error) }
         )
         return result
     }
 
-    override fun readLatorArticles(): Single<List<Article>> {
-        var result: List<Article> = emptyList()
-        realmClient.executeTransaction { transaction ->
-            result = transaction.copyFromRealm(transaction.where(ReadLatorArticle::class.java).findAllAsync())
-        }
-        return Single.just(result)
-    }
+    override fun readLatorArticles(): Single<List<RealmArticle>> =
+            Single.just(realmClient.copyFromRealm(realmClient.where(RealmArticle::class.java).findAllAsync()))
 
-    override fun favoriteArticles(): Single<List<Article>> {
-        var result: List<Article> = emptyList()
-        realmClient.executeTransaction { transaction ->
-            result = transaction.copyFromRealm(transaction.where(FavoriteArticle::class.java).findAllAsync())
-        }
-        return Single.just(result)
-    }
+    override fun favoriteArticles(): Single<List<RealmArticle>> =
+            Single.just(realmClient.copyFromRealm(realmClient.where(RealmArticle::class.java).findAllAsync()))
 
-    override fun readLatorArticlesLiveData(): Single<LiveRealmData<ReadLatorArticle>> =
-            Single.just(LiveRealmData(realmClient.where(ReadLatorArticle::class.java).findAllAsync()))
+    override fun readLatorArticlesLiveData(): Single<LiveRealmData<RealmArticle>> =
+            Single.just(LiveRealmData(realmClient.where(RealmArticle::class.java).findAllAsync()))
 
-    override fun favoriteArticlesLiveData(): Single<LiveRealmData<FavoriteArticle>> =
-            Single.just(LiveRealmData(realmClient.where(FavoriteArticle::class.java).findAllAsync()))
+    override fun favoriteArticlesLiveData(): Single<LiveRealmData<RealmArticle>> =
+            Single.just(LiveRealmData(realmClient.where(RealmArticle::class.java).findAllAsync()))
 }

@@ -2,10 +2,7 @@ package io.gitub.kotako.astraia.data.source
 
 import io.gitub.kotako.astraia.data.Entity.Article
 import io.gitub.kotako.astraia.data.Entity.Author
-import io.gitub.kotako.astraia.data.Query
-import io.gitub.kotako.astraia.data.realmObject.FavoriteArticle
-import io.gitub.kotako.astraia.data.realmObject.LiveRealmData
-import io.gitub.kotako.astraia.data.realmObject.ReadLatorArticle
+import io.gitub.kotako.astraia.data.realm.RealmArticle
 import io.reactivex.Completable
 import io.reactivex.Single
 
@@ -22,11 +19,11 @@ interface DataSource {
 
     fun addFavoriteArticle(article: Article): Completable
 
-    fun readLatorArticles(): Single<List<Article>>
+    fun readLatorArticles(): Single<List<RealmArticle>>
 
-    fun readLatorArticlesLiveData(): Single<LiveRealmData<ReadLatorArticle>>
+    fun readLatorArticlesLiveData(): Single<LiveRealmData<RealmArticle>>
 
-    fun favoriteArticles(): Single<List<Article>>
+    fun favoriteArticles(): Single<List<RealmArticle>>
 
-    fun favoriteArticlesLiveData(): Single<LiveRealmData<FavoriteArticle>>
+    fun favoriteArticlesLiveData(): Single<LiveRealmData<RealmArticle>>
 }

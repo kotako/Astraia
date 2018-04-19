@@ -1,4 +1,4 @@
-package io.gitub.kotako.astraia.data.realmObject
+package io.gitub.kotako.astraia.data.source
 
 import android.arch.lifecycle.LiveData
 import io.realm.RealmChangeListener

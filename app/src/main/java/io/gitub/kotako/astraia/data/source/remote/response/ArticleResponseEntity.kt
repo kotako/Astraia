@@ -2,20 +2,18 @@ package io.gitub.kotako.astraia.data.source.remote.response
 
 import com.google.gson.annotations.SerializedName
 import io.gitub.kotako.astraia.data.Entity.*
-import io.gitub.kotako.astraia.data.Entity.Author
-import java.util.*
 
 data class ArticleResponseEntity(
         @SerializedName("cinii:naid")
         override val id: Long? = null,
 
         @SerializedName("@id")
-        override val link: String = "",
+        override val link: String? = null,
 
         override val linkJson: String? = null,
 
         @SerializedName("dc:title")
-        private val titles: List<Name>? = null,
+        private val titles: List<NameSerialize?>? = null,
 
         override val description: String? = null,
 
@@ -23,113 +21,65 @@ data class ArticleResponseEntity(
         override val lang: String? = null,
 
         @SerializedName("foaf:maker")
-        override val authors: List<AuthorLink> = emptyList(),
+        private val authorsSerialize: List<AuthorLinkSerialize?>? = null,
 
         @SerializedName("dc:publisher")
-        override val publishers: List<Name> = emptyList(),
+        private val publishersSerialize: List<PublisherSerialize?>? = null,
 
         @SerializedName("prism:publicationName")
-        override val publications: List<Name> = emptyList(),
+        private val publicationsSerialize: List<PublicationSerialize?>? = null,
 
         @SerializedName("dc:source")
-        override val sources: List<Name> = emptyList(),
+        private val sourcesSerialize: List<SourceSerialize?>? = null,
 
         @SerializedName("prism:issn")
-        override val issn: String = "",
+        override val issn: String? = null,
 
         @SerializedName("cinii:ncid")
-        override val nacsisId: String = "",
+        override val nacsisId: String? =  null,
 
         @SerializedName("cinii:ndljpi")
-        override val dnlId: String = "",
+        override val dnlId: String? = null,
 
         @SerializedName("cinii:references")
-        override val citedCount: Int = 0,
+        override val citedCount: Int? = null,
 
         @SerializedName("prism:volume")
-        override val journalNumber: Int = 0,
+        override val journalNumber: Int? = null,
 
         @SerializedName("prism:number")
-        override val issueNumber: Int = 0,
+        override val issueNumber: Int? = null,
 
         @SerializedName("prism:startingPage")
-        override val startingPage: Int = 0,
+        override val startingPage: Int? = null,
 
         @SerializedName("prism:endingPage")
-        override val endingPage: Int = 0,
+        override val endingPage: Int? = null,
 
         @SerializedName("prism:publicationDate")
         override val publishedAt: String? = null,
 
         @SerializedName("dcterms:isPartOf")
-        override val jounal: LinkImpl? = null,
+        private val jounalSerialize: JournalSerialize? = null,
 
         @SerializedName("rdfs:seeAlso")
-        override val relatedLinks: List<LinkImpl> = emptyList(),
+        private val relatedLinksSerialize: List<LinkSerialize?>? = null,
 
         @SerializedName("foaf:topic")
-        override val topics: List<Topic> = emptyList(),
+        private val topicsSerialize: List<TopicSerialize?>? = null,
 
         @SerializedName("foaf:depiction")
-        override val image: LinkImpl? = null
+        private val imageSerialize: LinkSerialize? = null,
+
+        override val authors: List<Author?>? = null
 ) : Article {
-    override val title: String? = titles?.first { name -> name.lang.isNullOrBlank() }?.name
-
-    override val titleInEnglish: String? = titles?.first { name -> name.lang == "en" }?.name
-}
-
-data class Name(
-        @SerializedName("@value")
-        override val name: String = "",
-
-        @SerializedName("@language")
-        override val lang: String? = null
-) : Publisher, Publication, Source
-
-data class AuthorLink(
-        override val id: Long? = null,
-
-        @SerializedName("@id")
-        override val link: String? = null,
-
-        @SerializedName("foaf:name")
-        private val authorData: List<AuthorOverView>? = null,
-
-        override val description: String? = null,
-
-        override val intersts: List<Topic>? = null,
-
-        override val externalLinks: List<LinkImpl>? = null,
-
-        override val organizations: List<OrganizationImpl>? = null
-) : Author {
-    //      末尾の#meを削除して.jsonをつける
-    override val linkJson: String? = "${link?.substring(link.length - 3, link.length - 1)}.json"
-
-    override val name: String? = authorData?.first { author -> author.lang.isNullOrBlank() }?.name
-
-    override val nameInEnglish: String? = authorData?.first { author -> author.lang == "en" }?.name
-}
-
-data class AuthorOverView(
-        @SerializedName("@value")
-        val name: String = "",
-
-        @SerializedName("@language")
-        val lang: String = "",
-
-        @SerializedName("con:organization")
-        val organizations: List<Organization> = emptyList()
-)
-
-data class OrganizationImpl(
-        @SerializedName("@id")
-        override val link: String = "",
-
-        @SerializedName("foaf:name")
-        private val names: List<Name>? = null
-) : Organization {
-    override val name: String? = names?.first { t -> t.lang.isNullOrEmpty() }?.name
-
-    override val nameInEnglish: String? = names?.first { t -> t.lang == "en" }?.name
+    override val title: String? = titles?.first { name -> name?.lang.isNullOrBlank() }?.name
+    override val titleInEnglish: String? = titles?.first { name -> name?.lang == "en" }?.name
+    override val publishers: List<Publisher?>? = publishersSerialize
+    override val publications: List<Publication?>? = publicationsSerialize
+    override val sources: List<Source?>? = sourcesSerialize
+    override val image: Link? = imageSerialize
+    override val jounal: Journal? = jounalSerialize
+    override val relatedLinks: List<Link?>? = relatedLinksSerialize
+    override val topics: List<Topic?>? = topicsSerialize
 }

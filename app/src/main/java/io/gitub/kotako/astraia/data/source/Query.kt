@@ -1,4 +1,4 @@
-package io.gitub.kotako.astraia.data
+package io.gitub.kotako.astraia.data.source
 
 data class Query(
         var keyword: String,

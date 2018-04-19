@@ -2,7 +2,7 @@ package io.gitub.kotako.astraia.articles
 
 import android.arch.lifecycle.ViewModel
 import io.gitub.kotako.astraia.data.Entity.Article
-import io.gitub.kotako.astraia.data.Query
+import io.gitub.kotako.astraia.data.source.Query
 import io.gitub.kotako.astraia.data.source.ArticleRepository
 import io.gitub.kotako.astraia.util.defaultErrorHandler
 import io.reactivex.android.schedulers.AndroidSchedulers

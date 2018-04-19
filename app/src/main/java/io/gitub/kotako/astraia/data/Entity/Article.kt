@@ -1,30 +1,28 @@
 package io.gitub.kotako.astraia.data.Entity
 
-import io.realm.RealmObject
-
-open class Article : RealmObject() {
-    open var id: Long? = null
-    open var link: String? = null
-    open var linkJson: String? = null
-    open var title: String? = null
-    open var titleInEnglish: String? = null
-    open var description: String? = null
-    open var lang: String? = null
-    open var authors: List<Author>? = null
-    open var publishers: List<Publisher>? = null
-    open var publications: List<Publication>? = null
-    open var sources: List<Source>? = null
-    open var issn: String? = null
-    open var nacsisId: String? = null
-    open var dnlId: String? = null
-    open var citedCount: Int? = null
-    open var journalNumber: Int? = null
-    open var issueNumber: Int? = null
-    open var startingPage: Int? = null
-    open var endingPage: Int? = null
-    open var publishedAt: String? = null
-    open var jounal: Journal? = null
-    open var relatedLinks: List<Link>? = null
-    open var topics: List<Topic>? = null
-    open var image: Link? = null
+interface Article {
+    val id: Long?
+    val link: String?
+    val linkJson: String?
+    val title: String?
+    val titleInEnglish: String?
+    val description: String?
+    val lang: String?
+    val authors: List<Author?>?
+    val publishers: List<Publisher?>?
+    val publications: List<Publication?>?
+    val sources: List<Source?>?
+    val issn: String?
+    val nacsisId: String?
+    val dnlId: String?
+    val citedCount: Int?
+    val journalNumber: Int?
+    val issueNumber: Int?
+    val startingPage: Int?
+    val endingPage: Int?
+    val publishedAt: String?
+    val jounal: Journal?
+    val relatedLinks: List<Link?>?
+    val topics: List<Topic?>?
+    val image: Link?
 }

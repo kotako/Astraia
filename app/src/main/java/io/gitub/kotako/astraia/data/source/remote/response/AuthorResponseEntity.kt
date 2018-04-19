@@ -13,33 +13,21 @@ data class AuthorResponseEntity(
         override val link: String? = null,
 
         @SerializedName("foaf:name")
-        private val names: List<Name>? = null,
+        private val namesSerialize: List<NameSerialize?>? = null,
+
+        @SerializedName("foaf:interest")
+        private val interstsSerialize: List<TopicSerialize?>? = null,
+
+        @SerializedName("rdfs:seeAlso")
+        private val externalLinksSerialize: List<LinkSerialize?>? = null,
 
         override val description: String? = null,
 
-        @SerializedName("foaf:interest")
-        override val intersts: List<TopicImpl> = emptyList(),
-
-        @SerializedName("rdfs:seeAlso")
-        override val externalLinks: List<LinkImpl> = emptyList(),
-
-        override val organizations: List<Organization>? = emptyList()
+        override val organizations: List<Organization>? = null
 ) : Author {
-    override val linkJson: String? = link?.substring(link.length - 3, link.length - 1)
-
-    override val name: String? = names?.first { t -> t.lang.isNullOrBlank() }?.name
-
-    override val nameInEnglish: String? = names?.first { t -> t.lang == "en" }?.name
-}
-
-data class TopicImpl(
-        @SerializedName("@id")
-        override val link: String = "",
-
-        @SerializedName("dc:title")
-        private val titles: List<Name>? = null
-) : Topic {
-    override val title: String? = titles?.first { t -> t.lang.isNullOrBlank() }?.name
-
-    override val titleInEnglish: String? = titles?.first { t -> t.lang == "en" }?.name
+    override val linkJson: String? = link?.let { value: String -> value.substring(value.length - 3, value.length - 1) }
+    override val name: String? = namesSerialize?.first { t -> t?.lang.isNullOrBlank() }?.name
+    override val nameInEnglish: String? = namesSerialize?.first { t -> t?.lang == "en" }?.name
+    override val intersts: List<Topic?>? = interstsSerialize
+    override val externalLinks: List<Link?>? = externalLinksSerialize
 }

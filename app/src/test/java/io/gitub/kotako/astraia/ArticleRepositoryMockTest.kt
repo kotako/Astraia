@@ -2,7 +2,7 @@ package io.gitub.kotako.astraia
 
 import io.gitub.kotako.astraia.data.Entity.Article
 import io.gitub.kotako.astraia.data.Entity.Author
-import io.gitub.kotako.astraia.data.Query
+import io.gitub.kotako.astraia.data.source.Query
 import io.gitub.kotako.astraia.data.source.ArticleRepository
 import io.gitub.kotako.astraia.data.source.remote.response.ArticleColumnResponseEntity
 import io.gitub.kotako.astraia.data.source.remote.response.ArticleResponseEntity

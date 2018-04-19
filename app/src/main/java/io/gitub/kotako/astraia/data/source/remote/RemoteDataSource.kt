@@ -2,11 +2,10 @@ package io.gitub.kotako.astraia.data.source.remote
 
 import io.gitub.kotako.astraia.data.Entity.Article
 import io.gitub.kotako.astraia.data.Entity.Author
-import io.gitub.kotako.astraia.data.Query
-import io.gitub.kotako.astraia.data.realmObject.FavoriteArticle
-import io.gitub.kotako.astraia.data.realmObject.LiveRealmData
-import io.gitub.kotako.astraia.data.realmObject.ReadLatorArticle
+import io.gitub.kotako.astraia.data.realm.RealmArticle
+import io.gitub.kotako.astraia.data.source.Query
 import io.gitub.kotako.astraia.data.source.DataSource
+import io.gitub.kotako.astraia.data.source.LiveRealmData
 import io.gitub.kotako.astraia.data.source.remote.api.CiniiApi
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -73,11 +72,11 @@ open class RemoteDataSource @Inject constructor(
 
     override fun addReadLatorArticle(article: Article): Completable = Completable.complete()
 
-    override fun favoriteArticles(): Single<List<Article>> = Single.never()
+    override fun favoriteArticles(): Single<List<RealmArticle>> = Single.never()
 
-    override fun readLatorArticles(): Single<List<Article>> = Single.never()
+    override fun readLatorArticles(): Single<List<RealmArticle>> = Single.never()
 
-    override fun favoriteArticlesLiveData(): Single<LiveRealmData<FavoriteArticle>> = Single.never()
+    override fun favoriteArticlesLiveData(): Single<LiveRealmData<RealmArticle>> = Single.never()
 
-    override fun readLatorArticlesLiveData(): Single<LiveRealmData<ReadLatorArticle>> = Single.never()
+    override fun readLatorArticlesLiveData(): Single<LiveRealmData<RealmArticle>> = Single.never()
 }
