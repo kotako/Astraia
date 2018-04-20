@@ -42,11 +42,11 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideRemoteDataSource(retrofit: Retrofit): DataSource = RemoteDataSource(retrofit)
+    fun provideRemoteDataSource(retrofit: Retrofit): RemoteDataSource = RemoteDataSource(retrofit)
 
     @Provides
     @Singleton
-    fun provideArticleRepository(remoteDataSource: DataSource, localDataSource: DataSource): ArticleRepository = ArticleRepository(remoteDataSource, localDataSource)
+    fun provideArticleRepository(remoteDataSource: RemoteDataSource, localDataSource: LocalDataSource): ArticleRepository = ArticleRepository(remoteDataSource, localDataSource)
 
     @Provides
     @Singleton
@@ -62,12 +62,9 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideLocalDataSource(realm: Realm): DataSource = LocalDataSource(realm)
+    fun provideLocalDataSource(realm: Realm): LocalDataSource = LocalDataSource(realm)
 
     @Provides
     @Singleton
     fun provideArticlesViewModel(repository: ArticleRepository): ArticlesViewModel = ArticlesViewModel(repository)
-
-    @Provides
-    fun provideArticleItemViewModel(repository: ArticleRepository): ArticleItemViewModel = ArticleItemViewModel(repository)
 }
