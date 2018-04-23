@@ -14,13 +14,11 @@ import io.gitub.kotako.astraia.data.Entity.Article
 import io.gitub.kotako.astraia.data.source.ArticleRepository
 import io.gitub.kotako.astraia.databinding.FragmentArticlesBinding
 import io.gitub.kotako.astraia.di.ViewModelFactory
-import kotlinx.android.synthetic.main.fragment_articles.view.*
 import java.lang.ref.WeakReference
 import javax.inject.Inject
 
 class ArticlesFragment : DaggerFragment(), ArticleItemNavigator {
 
-    @Inject lateinit var viewModelFactory: ViewModelFactory
     @Inject lateinit var repository: ArticleRepository
     private lateinit var viewModel: ArticlesViewModel
     private lateinit var binding: FragmentArticlesBinding
@@ -38,7 +36,10 @@ class ArticlesFragment : DaggerFragment(), ArticleItemNavigator {
         binding = FragmentArticlesBinding.bind(view)
         binding.viewModel = viewModel
 
-        binding.viewModel?.articles?.observe(this, Observer<MutableList<Article>> {})
+        binding.viewModel?.articles?.observe(this, Observer<MutableList<Article>> { result ->
+            (binding.articlesList.adapter as ArticlesRecyclerAdapter).articles = result as List<Article>
+            binding.articlesList.adapter.notifyDataSetChanged()
+        })
         binding.viewModel?.isLoading?.observe(this, Observer {})
 
         return view

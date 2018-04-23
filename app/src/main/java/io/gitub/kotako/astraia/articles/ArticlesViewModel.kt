@@ -1,6 +1,5 @@
 package io.gitub.kotako.astraia.articles
 
-import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import io.gitub.kotako.astraia.data.Entity.Article
@@ -19,7 +18,7 @@ class ArticlesViewModel @Inject constructor(
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
     private var navigator: ArticlesNavigator? = null
 
-    var query: Query = Query(keyword = "")
+    var query: Query = Query(keyword = "android")
     val articles: MutableLiveData<MutableList<Article>> by lazy {
         MutableLiveData<MutableList<Article>>().apply { value = mutableListOf() }
     }

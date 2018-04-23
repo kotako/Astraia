@@ -9,7 +9,7 @@ import io.gitub.kotako.astraia.data.source.ArticleRepository
 import java.lang.ref.WeakReference
 
 class ArticlesRecyclerAdapter(
-        private val articles: List<Article>,
+        var articles: List<Article>,
         private val navigator: WeakReference<ArticleItemNavigator>,
         private val repository: ArticleRepository
 ): RecyclerView.Adapter<ArticleViewHolder>() {
