@@ -5,6 +5,7 @@
         <variable
             name="viewModel"
             type="io.gitub.kotako.astraia.articles.ArticleItemViewModel" />
+
         <variable
             name="article"
             type="io.gitub.kotako.astraia.data.Entity.Article" />
@@ -17,13 +18,15 @@
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:paddingTop="4dp"
-        android:background="?android:attr/selectableItemBackground"
-        android:onClick="@{viewModel.articleClicked()}">
+        android:clickable="true"
+        android:onClick="@{() -> viewModel.articleClicked()}"
+        android:background="?android:attr/selectableItemBackground">
 
         <TextView
             android:id="@+id/titleTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="@{article.title}"
             android:layout_marginBottom="8dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
@@ -43,6 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/authorsTextView"
+            android:text="@{article.description}"
             android:drawablePadding="4dp"
             android:drawableStart="@drawable/ic_comment_black"
             android:drawableTint="@color/gray"
@@ -57,8 +61,8 @@
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="8dp"
             android:contentDescription="@string/read_later"
-            android:onClick="@{viewModel.readLaterClicked()}"
-            android:src="@{viewModel.isReadLaterAdded() ? @drawable/ic_turned_in_red : @drawable/ic_turned_in}" />
+            android:onClick="@{() -> viewModel.readLaterClicked(article)}"
+            android:src="@{viewModel.isReadLaterAdded ? @drawable/ic_turned_in_red : @drawable/ic_turned_in}" />
 
     </RelativeLayout>
 </layout>

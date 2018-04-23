@@ -18,12 +18,13 @@ class ArticlesViewModel @Inject constructor(
 
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
     private var navigator: ArticlesNavigator? = null
+
     var query: Query = Query(keyword = "")
-    val articles: LiveData<MutableList<Article>> by lazy {
-        MutableLiveData<MutableList<Article>>().apply { postValue(mutableListOf()) }
+    val articles: MutableLiveData<MutableList<Article>> by lazy {
+        MutableLiveData<MutableList<Article>>().apply { value = mutableListOf() }
     }
     val isLoading: MutableLiveData<Boolean> by lazy {
-        MutableLiveData<Boolean>().apply { postValue(false) }
+        MutableLiveData<Boolean>().apply { value = false }
     }
 
     fun start() {
@@ -38,12 +39,13 @@ class ArticlesViewModel @Inject constructor(
         if (compositeDisposable.size() > 0 || isLoading.value == true) return
         query.startIndex = (articles.value?.size ?: 0) + 1
         compositeDisposable.add(repository.fetchArticles(query)
-                .doOnSubscribe { isLoading.value = true }
-                .doFinally { isLoading.value = false }
+                .doOnSubscribe { isLoading.postValue(true) }
+                .doFinally { isLoading.postValue(false) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ t: List<Article> -> articles.value?.addAll(t) }, defaultErrorHandler())
+                .subscribe({ t: List<Article> -> articles.postValue(t as MutableList<Article>) }, defaultErrorHandler())
         )
+        isLoading.value = false
     }
 
     override fun onCleared() {

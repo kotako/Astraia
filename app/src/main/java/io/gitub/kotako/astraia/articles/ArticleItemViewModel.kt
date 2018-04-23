@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 class ArticleItemViewModel @Inject constructor(
         private val articleRepository: ArticleRepository
-) : ViewModel() {
+): ViewModel() {
 
     private val compositeDisposable = CompositeDisposable()
     private var navigator: WeakReference<ArticleItemNavigator>? = null

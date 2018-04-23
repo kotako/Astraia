@@ -1,14 +1,19 @@
 package io.gitub.kotako.astraia.articles
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import dagger.android.support.DaggerAppCompatActivity
 import io.gitub.kotako.astraia.R
+import io.gitub.kotako.astraia.data.source.ArticleRepository
+import io.gitub.kotako.astraia.di.ViewModelFactory
 import javax.inject.Inject
 
-class ArticlesActivity: AppCompatActivity(), ArticlesNavigator {
+class ArticlesActivity: DaggerAppCompatActivity(), ArticlesNavigator {
 
-    @Inject
-    lateinit var viewModel: ArticlesViewModel
+    @Inject lateinit var viewModelFactory: ViewModelFactory
+    @Inject lateinit var repository: ArticleRepository
+    private val viewModel: ArticlesViewModel by lazy {
+        viewModelFactory.create(ArticlesViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -16,8 +21,7 @@ class ArticlesActivity: AppCompatActivity(), ArticlesNavigator {
 
         val fragment = ArticlesFragment.newInstance()
         viewModel.setNavigator(this)
-        (fragment as ArticlesFragment).setViewModel(viewModel)
-
+        fragment.setViewModel(viewModel)
         supportFragmentManager.beginTransaction().run {
             add(R.id.container, fragment)
             commit()

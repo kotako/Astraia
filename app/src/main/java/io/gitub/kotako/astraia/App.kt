@@ -4,6 +4,7 @@ import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
 import io.gitub.kotako.astraia.di.AppModule
 import io.gitub.kotako.astraia.di.DaggerAppComponent
+import io.gitub.kotako.astraia.di.RepositoryModule
 import io.realm.Realm
 
 class App: DaggerApplication() {
@@ -16,6 +17,7 @@ class App: DaggerApplication() {
         return DaggerAppComponent.builder()
                 .application(this)
                 .appModule(AppModule)
+                .repository(RepositoryModule)
                 .build()
     }
 }
