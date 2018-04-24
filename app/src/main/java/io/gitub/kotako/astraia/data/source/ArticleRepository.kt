@@ -29,7 +29,7 @@ open class ArticleRepository @Inject constructor(
     }
 
     override fun addFavoriteArticle(article: Article): Completable {
-        return remoteDataSource.addFavoriteArticle(article)
+        return localDataSource.addFavoriteArticle(article)
     }
 
     override fun addReadLatorArticle(article: Article): Completable {
