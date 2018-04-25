@@ -4,13 +4,13 @@ import io.gitub.kotako.astraia.data.Entity.Article
 import io.gitub.kotako.astraia.data.Entity.Author
 import io.gitub.kotako.astraia.data.realm.RealmArticle
 import io.gitub.kotako.astraia.data.realm.RealmGroup
-import io.gitub.kotako.astraia.data.source.Query
 import io.gitub.kotako.astraia.data.source.DataSource
 import io.gitub.kotako.astraia.data.source.LiveRealmData
+import io.gitub.kotako.astraia.data.source.Query
+import io.gitub.kotako.astraia.util.toRealmObject
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.realm.Realm
-import io.realm.RealmList
 import javax.inject.Inject
 
 class LocalDataSource @Inject constructor(
@@ -34,16 +34,7 @@ class LocalDataSource @Inject constructor(
 
     override fun addFavoriteArticle(article: Article): Completable {
         var result: Completable = Completable.complete()
-        val realmArticle = RealmArticle().apply {
-            id = article.id
-            group = RealmGroup.Favorite.name
-            link = article.link
-            linkJson = article.linkJson
-            title = article.title
-            titleInEnglish = article.titleInEnglish
-            description = article.description
-            authors = article.authors?.map { author -> author?.name } as RealmList<String?>?
-        }
+        val realmArticle = article.toRealmObject(RealmGroup.Favorite)
         realmClient.executeTransactionAsync(
                 { transaction: Realm -> transaction.copyToRealmOrUpdate(realmArticle) },
                 { error: Throwable -> result = Completable.error(error) }
@@ -53,16 +44,7 @@ class LocalDataSource @Inject constructor(
 
     override fun addReadLatorArticle(article: Article): Completable {
         var result: Completable = Completable.complete()
-        val realmArticle = RealmArticle().apply {
-            id = article.id
-            group = RealmGroup.ReadLater.name
-            link = article.link
-            linkJson = article.linkJson
-            title = article.title
-            titleInEnglish = article.titleInEnglish
-            description = article.description
-            authors = article.authors?.map { author -> author?.name } as RealmList<String?>?
-        }
+        val realmArticle = article.toRealmObject(RealmGroup.ReadLater)
         realmClient.executeTransactionAsync(
                 { transition: Realm -> transition.copyToRealmOrUpdate(realmArticle) },
                 { error: Throwable? -> result = Completable.error(error) }

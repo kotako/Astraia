@@ -1,4 +1,4 @@
-package io.gitub.kotako.astraia
+package io.gitub.kotako.astraia.viewmodel
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import android.arch.lifecycle.Observer
