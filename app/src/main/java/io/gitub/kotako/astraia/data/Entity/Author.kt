@@ -1,6 +1,8 @@
 package io.gitub.kotako.astraia.data.Entity
 
-interface Author {
+import java.io.Serializable
+
+interface Author: Serializable {
     val id: Long?
     val link: String?
     val linkJson: String?

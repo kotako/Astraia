@@ -1,6 +1,8 @@
 package io.gitub.kotako.astraia.data.Entity
 
-interface Article {
+import java.io.Serializable
+
+interface Article: Serializable {
     val id: Long?
     val link: String?
     val linkJson: String?
