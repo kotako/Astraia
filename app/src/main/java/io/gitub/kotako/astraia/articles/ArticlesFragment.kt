@@ -13,13 +13,13 @@ import io.gitub.kotako.astraia.R
 import io.gitub.kotako.astraia.data.Entity.Article
 import io.gitub.kotako.astraia.data.source.ArticleRepository
 import io.gitub.kotako.astraia.databinding.FragmentArticlesBinding
-import io.gitub.kotako.astraia.di.ViewModelFactory
 import java.lang.ref.WeakReference
 import javax.inject.Inject
 
 class ArticlesFragment : DaggerFragment(), ArticleItemNavigator {
 
-    @Inject lateinit var repository: ArticleRepository
+    @Inject
+    lateinit var repository: ArticleRepository
     private lateinit var viewModel: ArticlesViewModel
     private lateinit var binding: FragmentArticlesBinding
 

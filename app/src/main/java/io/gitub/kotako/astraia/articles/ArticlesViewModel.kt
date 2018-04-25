@@ -13,17 +13,17 @@ import javax.inject.Inject
 
 class ArticlesViewModel @Inject constructor(
         private val repository: ArticleRepository
-): ViewModel() {
+) : ViewModel() {
 
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
     private var navigator: ArticlesNavigator? = null
 
     var query: Query = Query(keyword = "android")
     val articles: MutableLiveData<MutableList<Article>> by lazy {
-        MutableLiveData<MutableList<Article>>().apply { value = mutableListOf() }
+        MutableLiveData<MutableList<Article>>().apply { postValue(mutableListOf()) }
     }
     val isLoading: MutableLiveData<Boolean> by lazy {
-        MutableLiveData<Boolean>().apply { value = false }
+        MutableLiveData<Boolean>().apply { postValue(false) }
     }
 
     fun start() {
@@ -42,9 +42,8 @@ class ArticlesViewModel @Inject constructor(
                 .doFinally { isLoading.postValue(false) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ t: List<Article> -> articles.postValue(t as MutableList<Article>) }, defaultErrorHandler())
+                .subscribe({ t: List<Article> -> articles.postValue(articles.value?.plus(t)?.toMutableList()) }, defaultErrorHandler())
         )
-        isLoading.value = false
     }
 
     override fun onCleared() {
