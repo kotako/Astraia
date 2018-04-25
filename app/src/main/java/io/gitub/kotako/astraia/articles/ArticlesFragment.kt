@@ -9,11 +9,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import dagger.android.support.DaggerFragment
-import io.gitub.kotako.astraia.R
 import io.gitub.kotako.astraia.data.Entity.Article
 import io.gitub.kotako.astraia.data.source.ArticleRepository
 import io.gitub.kotako.astraia.databinding.FragmentArticlesBinding
-import java.lang.ref.WeakReference
 import javax.inject.Inject
 
 class ArticlesFragment : DaggerFragment(), ArticleItemNavigator {
@@ -22,6 +20,25 @@ class ArticlesFragment : DaggerFragment(), ArticleItemNavigator {
     lateinit var repository: ArticleRepository
     private lateinit var viewModel: ArticlesViewModel
     private lateinit var binding: FragmentArticlesBinding
+
+    private val articlesListObserver = Observer<MutableList<Article>> {
+        it?.let {
+            val prevSize = (binding.articlesList.adapter as ArticlesRecyclerAdapter).articles.size
+            (binding.articlesList.adapter as ArticlesRecyclerAdapter).articles = it
+
+            if (it.size > prevSize) {
+                binding.articlesList.adapter.notifyItemRangeInserted(prevSize, it.size)
+            } else {
+                binding.articlesList.adapter.notifyDataSetChanged()
+            }
+        }
+    }
+
+    private val loadObserver = Observer<Boolean> {
+        it?.let {
+            binding.refreshLayout.isRefreshing = it
+        }
+    }
 
     companion object {
         fun newInstance(): ArticlesFragment = ArticlesFragment()
@@ -32,22 +49,21 @@ class ArticlesFragment : DaggerFragment(), ArticleItemNavigator {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_articles, container, false)
-        binding = FragmentArticlesBinding.bind(view)
+        binding = FragmentArticlesBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.articles.observeForever(articlesListObserver)
+        viewModel.isLoading.observeForever(loadObserver)
         binding.viewModel = viewModel
-
-        binding.viewModel?.articles?.observe(this, Observer<MutableList<Article>> { result ->
-            (binding.articlesList.adapter as ArticlesRecyclerAdapter).articles = result as List<Article>
-            binding.articlesList.adapter.notifyDataSetChanged()
-        })
-        binding.viewModel?.isLoading?.observe(this, Observer {})
-
-        return view
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setUpRecyclerView()
+        setUpRefreshView()
     }
 
     override fun onResume() {
@@ -56,13 +72,29 @@ class ArticlesFragment : DaggerFragment(), ArticleItemNavigator {
     }
 
     override fun onStartArticleDetail() {
-        // TODO : implement method
-        // start detail activity
+        // TODO : implement method start detail activity
+    }
+
+    private fun setUpRefreshView() {
+        binding.refreshLayout.setOnRefreshListener {
+            viewModel.articles.value = mutableListOf()
+            viewModel.fetchArticles()
+        }
     }
 
     private fun setUpRecyclerView() {
-        binding.articlesList.adapter = ArticlesRecyclerAdapter(viewModel.articles.value as List<Article>, WeakReference(this), repository)
-        binding.articlesList.layoutManager = LinearLayoutManager(activity)
-        binding.articlesList.addItemDecoration(DividerItemDecoration(activity, RecyclerView.VERTICAL))
+        binding.articlesList.apply {
+            adapter = ArticlesRecyclerAdapter(
+                    articles = viewModel.articles.value?.toMutableList() ?: mutableListOf(),
+                    navigator = this@ArticlesFragment,
+                    repository = repository,
+                    onBottomReached = ::onBottomReached)
+            layoutManager = LinearLayoutManager(activity)
+            addItemDecoration(DividerItemDecoration(activity, RecyclerView.VERTICAL))
+        }
+    }
+
+    private fun onBottomReached() {
+        viewModel.fetchArticles()
     }
 }

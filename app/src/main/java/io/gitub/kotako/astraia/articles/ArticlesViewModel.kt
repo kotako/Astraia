@@ -19,12 +19,8 @@ class ArticlesViewModel @Inject constructor(
     private var navigator: ArticlesNavigator? = null
 
     var query: Query = Query(keyword = "android")
-    val articles: MutableLiveData<MutableList<Article>> by lazy {
-        MutableLiveData<MutableList<Article>>().apply { postValue(mutableListOf()) }
-    }
-    val isLoading: MutableLiveData<Boolean> by lazy {
-        MutableLiveData<Boolean>().apply { postValue(false) }
-    }
+    val articles = MutableLiveData<MutableList<Article>>().apply { postValue(mutableListOf()) }
+    val isLoading = MutableLiveData<Boolean>().apply { postValue(false) }
 
     fun start() {
         if (articles.value?.isEmpty() == true) fetchArticles()
@@ -35,7 +31,7 @@ class ArticlesViewModel @Inject constructor(
     }
 
     fun fetchArticles() {
-        if (compositeDisposable.size() > 0 || isLoading.value == true) return
+        if (compositeDisposable.isDisposed || isLoading.value == true) return
         query.startIndex = (articles.value?.size ?: 0) + 1
         compositeDisposable.add(repository.fetchArticles(query)
                 .doOnSubscribe { isLoading.postValue(true) }

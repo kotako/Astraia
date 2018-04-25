@@ -4,8 +4,6 @@ import com.google.gson.annotations.SerializedName
 import io.gitub.kotako.astraia.data.Entity.*
 
 data class ArticleColumnResponseEntity(
-        override val id: Long? = null,
-
         @SerializedName("@id")
         override val link: String? = null,
 
@@ -64,6 +62,7 @@ data class ArticleColumnResponseEntity(
         @SerializedName("prism:publicationDate")
         override val publishedAt: String? = null
 ) : Article {
+    override val id: Long? = link?.dropLast(12)?.toLong()
     override val linkJson: String? = linkJsonData?.link
     override val authors: List<Author?>? = authorsName?.map { author -> AuthorLinkSerialize(authorData = listOf(AuthorOverViewSerialize(name = author?.name))) as Author }
     override val publishers: List<Publisher?>? = listOf(PublisherSerialize(name = publisher) as Publisher)
