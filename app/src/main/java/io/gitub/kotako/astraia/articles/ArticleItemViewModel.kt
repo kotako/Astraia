@@ -20,8 +20,8 @@ class ArticleItemViewModel @Inject constructor(
         MutableLiveData<Boolean>().apply { postValue(false) }
     }
 
-    fun articleClicked() {
-        navigator?.get()?.onStartArticleDetail()
+    fun articleClicked(article: Article) {
+        navigator?.get()?.onStartArticleDetail(article)
     }
 
     fun readLaterClicked(article: Article) {

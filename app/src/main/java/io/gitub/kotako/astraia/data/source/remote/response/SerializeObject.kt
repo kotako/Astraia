@@ -2,6 +2,7 @@ package io.gitub.kotako.astraia.data.source.remote.response
 
 import com.google.gson.annotations.SerializedName
 import io.gitub.kotako.astraia.data.Entity.*
+import java.io.Serializable
 
 // Gsonでデシリアライズする時につかう
 // TODO きもちわるいからどうにかしたい😞
@@ -12,7 +13,7 @@ data class NameSerialize(
 
         @SerializedName("@language")
         val lang: String? = null
-)
+): Serializable
 
 data class PublisherSerialize(
         @SerializedName("@value")
@@ -20,7 +21,7 @@ data class PublisherSerialize(
 
         @SerializedName("@language")
         override val lang: String? = null
-): Publisher
+): Publisher, Serializable
 
 data class PublicationSerialize(
         @SerializedName("@value")
@@ -28,7 +29,7 @@ data class PublicationSerialize(
 
         @SerializedName("@language")
         override val lang: String? = null
-): Publication
+): Publication, Serializable
 
 data class SourceSerialize(
         @SerializedName("@value")
@@ -36,7 +37,7 @@ data class SourceSerialize(
 
         @SerializedName("@language")
         override val lang: String? = null
-): Source
+): Source, Serializable
 
 data class LinkSerialize(
         @SerializedName("@id")
@@ -44,7 +45,7 @@ data class LinkSerialize(
 
         @SerializedName("dc:title")
         override val title: String? = null
-): Link
+): Link, Serializable
 
 data class JournalSerialize(
         @SerializedName("@id")
@@ -52,7 +53,7 @@ data class JournalSerialize(
 
         @SerializedName("dc:title")
         override val title: String? = null
-): Journal
+): Journal, Serializable
 
 data class AuthorLinkSerialize(
         @SerializedName("@id")
@@ -70,7 +71,7 @@ data class AuthorLinkSerialize(
         private val organizationsSerialize: List<OrganizationSerialize?>? = null,
 
         override val id: Long? = null
-): Author {
+): Author, Serializable {
     override val externalLinks: List<Link?>? = externalLinksSerialize
     override val linkJson: String? = link?.let { value: String -> "${value.substring(value.length - 3, value.length - 1)}.json" }
     override val organizations: List<Organization?>? = organizationsSerialize
@@ -87,7 +88,7 @@ data class AuthorOverViewSerialize(
 
         @SerializedName("con:organization")
         val organizations: List<OrganizationSerialize?>? = null
-)
+): Serializable
 
 data class OrganizationSerialize(
         @SerializedName("@id")
@@ -95,7 +96,7 @@ data class OrganizationSerialize(
 
         @SerializedName("foaf:name")
         private val names: List<NameSerialize?>? = null
-) : Organization {
+) : Organization, Serializable {
     override val name: String? = names?.first { t -> t?.lang.isNullOrEmpty() }?.name
     override val nameInEnglish: String? = names?.first { t -> t?.lang == "en" }?.name
 }
@@ -106,7 +107,7 @@ data class TopicSerialize(
 
         @SerializedName("dc:title")
         private val titles: List<NameSerialize?>? = null
-) : Topic {
+) : Topic, Serializable {
     override val title: String? = titles?.first { t -> t?.lang.isNullOrBlank() }?.name
     override val titleInEnglish: String? = titles?.first { t -> t?.lang == "en" }?.name
 }

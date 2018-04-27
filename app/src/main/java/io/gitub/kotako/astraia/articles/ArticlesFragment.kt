@@ -12,6 +12,7 @@ import dagger.android.support.DaggerFragment
 import io.gitub.kotako.astraia.data.Entity.Article
 import io.gitub.kotako.astraia.data.source.ArticleRepository
 import io.gitub.kotako.astraia.databinding.FragmentArticlesBinding
+import io.gitub.kotako.astraia.detail.ArticleDetailActivity
 import javax.inject.Inject
 
 class ArticlesFragment : DaggerFragment(), ArticleItemNavigator {
@@ -71,8 +72,9 @@ class ArticlesFragment : DaggerFragment(), ArticleItemNavigator {
         viewModel.start()
     }
 
-    override fun onStartArticleDetail() {
-        // TODO : implement method start detail activity
+    override fun onStartArticleDetail(article: Article) {
+        if (activity == null) return
+        ArticleDetailActivity.start(activity!!, article)
     }
 
     private fun setUpRefreshView() {

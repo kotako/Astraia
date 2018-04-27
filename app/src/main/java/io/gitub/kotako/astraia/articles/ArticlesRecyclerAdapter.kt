@@ -9,7 +9,7 @@ import io.gitub.kotako.astraia.data.source.ArticleRepository
 
 class ArticlesRecyclerAdapter(
         var articles: List<Article>,
-        private val navigator: ArticleItemNavigator,
+        private var navigator: ArticleItemNavigator?,
         private val repository: ArticleRepository,
         private val onBottomReached: () -> Unit
 ): RecyclerView.Adapter<ArticleViewHolder>() {
@@ -21,7 +21,7 @@ class ArticlesRecyclerAdapter(
         if (position == articles.size - 1) onBottomReached()
 
         val viewModel = ArticleItemViewModel(repository)
-        viewModel.setNavigator(navigator)
+        navigator?.let { viewModel.setNavigator(it) }
         holder.binding.viewModel = viewModel
         holder.binding.article = articles[position]
         holder.binding.authorsTextView.text = articles[position].authors?.joinToString (
@@ -31,4 +31,9 @@ class ArticlesRecyclerAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleViewHolder =
             ArticleViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.article_view, parent, false))
+
+    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+        navigator = null
+        super.onDetachedFromRecyclerView(recyclerView)
+    }
 }

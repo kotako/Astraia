@@ -2,6 +2,7 @@ package io.gitub.kotako.astraia.data.source.remote.response
 
 import com.google.gson.annotations.SerializedName
 import io.gitub.kotako.astraia.data.Entity.*
+import java.io.Serializable
 
 data class ArticleResponseEntity(
         @SerializedName("cinii:naid")
@@ -72,7 +73,7 @@ data class ArticleResponseEntity(
         private val imageSerialize: LinkSerialize? = null,
 
         override val authors: List<Author?>? = null
-) : Article {
+) : Article, Serializable {
     override val title: String? = titles?.first { name -> name?.lang.isNullOrBlank() }?.name
     override val titleInEnglish: String? = titles?.first { name -> name?.lang == "en" }?.name
     override val publishers: List<Publisher?>? = publishersSerialize

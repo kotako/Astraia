@@ -5,6 +5,7 @@ import io.gitub.kotako.astraia.data.Entity.Author
 import io.gitub.kotako.astraia.data.Entity.Link
 import io.gitub.kotako.astraia.data.Entity.Organization
 import io.gitub.kotako.astraia.data.Entity.Topic
+import java.io.Serializable
 
 data class AuthorColumnResponseEntity(
         @SerializedName("@id")
@@ -23,7 +24,7 @@ data class AuthorColumnResponseEntity(
         override val nameInEnglish: String? = null,
 
         override val organizations: List<Organization?>? = null
-) : Author {
+) : Author, Serializable {
     override val id: Long? = link?.dropLast(12)?.toLong()
     override val linkJson: String? = "$link.json"
 }

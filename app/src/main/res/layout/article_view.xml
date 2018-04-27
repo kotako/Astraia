@@ -19,7 +19,7 @@
         android:paddingRight="8dp"
         android:paddingTop="4dp"
         android:clickable="true"
-        android:onClick="@{() -> viewModel.articleClicked()}"
+        android:onClick="@{() -> viewModel.articleClicked(article)}"
         android:background="?android:attr/selectableItemBackground">
 
         <TextView
