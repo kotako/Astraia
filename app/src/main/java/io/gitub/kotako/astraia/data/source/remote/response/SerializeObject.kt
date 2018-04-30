@@ -13,7 +13,7 @@ data class NameSerialize(
 
         @SerializedName("@language")
         val lang: String? = null
-): Serializable
+) : Serializable
 
 data class PublisherSerialize(
         @SerializedName("@value")
@@ -21,7 +21,7 @@ data class PublisherSerialize(
 
         @SerializedName("@language")
         override val lang: String? = null
-): Publisher, Serializable
+) : Publisher, Serializable
 
 data class PublicationSerialize(
         @SerializedName("@value")
@@ -29,7 +29,7 @@ data class PublicationSerialize(
 
         @SerializedName("@language")
         override val lang: String? = null
-): Publication, Serializable
+) : Publication, Serializable
 
 data class SourceSerialize(
         @SerializedName("@value")
@@ -37,7 +37,7 @@ data class SourceSerialize(
 
         @SerializedName("@language")
         override val lang: String? = null
-): Source, Serializable
+) : Source, Serializable
 
 data class LinkSerialize(
         @SerializedName("@id")
@@ -45,7 +45,7 @@ data class LinkSerialize(
 
         @SerializedName("dc:title")
         override val title: String? = null
-): Link, Serializable
+) : Link, Serializable
 
 data class JournalSerialize(
         @SerializedName("@id")
@@ -53,7 +53,7 @@ data class JournalSerialize(
 
         @SerializedName("dc:title")
         override val title: String? = null
-): Journal, Serializable
+) : Journal, Serializable
 
 data class AuthorLinkSerialize(
         @SerializedName("@id")
@@ -71,12 +71,17 @@ data class AuthorLinkSerialize(
         private val organizationsSerialize: List<OrganizationSerialize?>? = null,
 
         override val id: Long? = null
-): Author, Serializable {
-    override val externalLinks: List<Link?>? = externalLinksSerialize
-    override val linkJson: String? = link?.let { value: String -> "${value.substring(value.length - 3, value.length - 1)}.json" }
-    override val organizations: List<Organization?>? = organizationsSerialize
-    override val name: String? = authorData?.first { author -> author?.lang.isNullOrBlank() }?.name
-    override val nameInEnglish: String? = authorData?.first { author -> author?.lang == "en" }?.name
+) : Author, Serializable {
+    override val externalLinks: List<Link?>?
+        get() = externalLinksSerialize
+    override val linkJson: String?
+        get() = link?.let { value: String -> "${value.substring(value.length - 3, value.length - 1)}.json" }
+    override val organizations: List<Organization?>?
+        get() = organizationsSerialize
+    override val name: String?
+        get() = authorData?.first { author -> author?.lang.isNullOrBlank() }?.name
+    override val nameInEnglish: String?
+        get() = authorData?.first { author -> author?.lang == "en" }?.name
 }
 
 data class AuthorOverViewSerialize(
@@ -88,7 +93,7 @@ data class AuthorOverViewSerialize(
 
         @SerializedName("con:organization")
         val organizations: List<OrganizationSerialize?>? = null
-): Serializable
+) : Serializable
 
 data class OrganizationSerialize(
         @SerializedName("@id")
@@ -97,8 +102,10 @@ data class OrganizationSerialize(
         @SerializedName("foaf:name")
         private val names: List<NameSerialize?>? = null
 ) : Organization, Serializable {
-    override val name: String? = names?.first { t -> t?.lang.isNullOrEmpty() }?.name
-    override val nameInEnglish: String? = names?.first { t -> t?.lang == "en" }?.name
+    override val name: String?
+        get() = names?.first { t -> t?.lang.isNullOrEmpty() }?.name
+    override val nameInEnglish: String?
+        get() = names?.first { t -> t?.lang == "en" }?.name
 }
 
 data class TopicSerialize(
@@ -108,6 +115,8 @@ data class TopicSerialize(
         @SerializedName("dc:title")
         private val titles: List<NameSerialize?>? = null
 ) : Topic, Serializable {
-    override val title: String? = titles?.first { t -> t?.lang.isNullOrBlank() }?.name
-    override val titleInEnglish: String? = titles?.first { t -> t?.lang == "en" }?.name
+    override val title: String?
+        get() = titles?.first { t -> t?.lang.isNullOrBlank() }?.name
+    override val titleInEnglish: String?
+        get() = titles?.first { t -> t?.lang == "en" }?.name
 }

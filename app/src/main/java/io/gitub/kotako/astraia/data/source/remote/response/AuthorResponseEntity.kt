@@ -26,9 +26,14 @@ data class AuthorResponseEntity(
 
         override val organizations: List<Organization>? = null
 ) : Author, Serializable {
-    override val linkJson: String? = link?.let { value: String -> value.substring(value.length - 3, value.length - 1) }
-    override val name: String? = namesSerialize?.first { t -> t?.lang.isNullOrBlank() }?.name
-    override val nameInEnglish: String? = namesSerialize?.first { t -> t?.lang == "en" }?.name
-    override val intersts: List<Topic?>? = interstsSerialize
-    override val externalLinks: List<Link?>? = externalLinksSerialize
+    override val linkJson: String?
+        get() = link?.let { value: String -> value.substring(value.length - 3, value.length - 1) }
+    override val name: String?
+        get() = namesSerialize?.first { t -> t?.lang.isNullOrBlank() }?.name
+    override val nameInEnglish: String?
+        get() = namesSerialize?.first { t -> t?.lang == "en" }?.name
+    override val intersts: List<Topic?>?
+        get() = interstsSerialize
+    override val externalLinks: List<Link?>?
+        get() = externalLinksSerialize
 }

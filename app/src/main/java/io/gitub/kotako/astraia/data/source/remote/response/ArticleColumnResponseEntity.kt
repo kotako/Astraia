@@ -63,9 +63,18 @@ data class ArticleColumnResponseEntity(
         @SerializedName("prism:publicationDate")
         override val publishedAt: String? = null
 ) : Article, Serializable {
-    override val id: Long? = link?.dropLast(12)?.toLong()
-    override val linkJson: String? = linkJsonData?.link
-    override val authors: List<Author?>? = authorsName?.map { author -> AuthorLinkSerialize(authorData = listOf(AuthorOverViewSerialize(name = author?.name))) as Author }
-    override val publishers: List<Publisher?>? = listOf(PublisherSerialize(name = publisher) as Publisher)
-    override val publications: List<Publication?>? = listOf(PublicationSerialize(name = publication) as Publication)
+    override val id: Long?
+        get() = link?.dropLast(12)?.toLong()
+    override val linkJson: String?
+        get() = linkJsonData?.link
+    override val authors: List<Author?>?
+        get() = authorsName?.map { author -> AuthorLinkSerialize(authorData = listOf(AuthorOverViewSerialize(name = author?.name))) as Author }
+    override val publishers: List<Publisher?>?
+        get() = listOf(PublisherSerialize(name = publisher) as Publisher)
+    override val publications: List<Publication?>?
+        get() = listOf(PublicationSerialize(name = publication) as Publication)
+    override val authorsString: String?
+        get() = authorsName?.joinToString(separator = ", ", transform = { it?.name ?: "" })
+    override val publishersString: String?
+        get() = publishers?.joinToString(separator = ", ", transform = { it?.name ?: "" })
 }

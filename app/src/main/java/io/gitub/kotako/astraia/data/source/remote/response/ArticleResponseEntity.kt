@@ -37,7 +37,7 @@ data class ArticleResponseEntity(
         override val issn: String? = null,
 
         @SerializedName("cinii:ncid")
-        override val nacsisId: String? =  null,
+        override val nacsisId: String? = null,
 
         @SerializedName("cinii:ndljpi")
         override val dnlId: String? = null,
@@ -70,17 +70,30 @@ data class ArticleResponseEntity(
         private val topicsSerialize: List<TopicSerialize?>? = null,
 
         @SerializedName("foaf:depiction")
-        private val imageSerialize: LinkSerialize? = null,
-
-        override val authors: List<Author?>? = null
+        private val imageSerialize: LinkSerialize? = null
 ) : Article, Serializable {
-    override val title: String? = titles?.first { name -> name?.lang.isNullOrBlank() }?.name
-    override val titleInEnglish: String? = titles?.first { name -> name?.lang == "en" }?.name
-    override val publishers: List<Publisher?>? = publishersSerialize
-    override val publications: List<Publication?>? = publicationsSerialize
-    override val sources: List<Source?>? = sourcesSerialize
-    override val image: Link? = imageSerialize
-    override val jounal: Journal? = jounalSerialize
-    override val relatedLinks: List<Link?>? = relatedLinksSerialize
-    override val topics: List<Topic?>? = topicsSerialize
+    override val authors: List<Author?>?
+        get() = authorsSerialize
+    override val title: String?
+        get() = titles?.first { name -> name?.lang.isNullOrBlank() }?.name
+    override val titleInEnglish: String?
+        get() = titles?.first { name -> name?.lang == "en" }?.name
+    override val publishers: List<Publisher?>?
+        get() = publishersSerialize
+    override val publishersString: String?
+        get() = publishersSerialize?.joinToString(separator = ", ", transform = { it?.name ?: "" })
+    override val authorsString: String?
+        get() = authorsSerialize?.joinToString(separator = ", ", transform = { it?.name ?: "" })
+    override val publications: List<Publication?>?
+        get() = publicationsSerialize
+    override val sources: List<Source?>?
+        get() = sourcesSerialize
+    override val image: Link?
+        get() = imageSerialize
+    override val jounal: Journal?
+        get() = jounalSerialize
+    override val relatedLinks: List<Link?>?
+        get() = relatedLinksSerialize
+    override val topics: List<Topic?>?
+        get() = topicsSerialize
 }

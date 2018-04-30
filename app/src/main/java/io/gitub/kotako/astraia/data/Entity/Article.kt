@@ -27,4 +27,6 @@ interface Article: Serializable {
     val relatedLinks: List<Link?>?
     val topics: List<Topic?>?
     val image: Link?
+    val publishersString: String?
+    val authorsString: String?
 }
