@@ -28,7 +28,9 @@ class LocalDataSourceTest {
         override val description: String? = null
         override val lang: String? = null
         override val authors: List<Author?>? = null
+        override val authorsString: String? = null
         override val publishers: List<Publisher?>? = null
+        override val publishersString: String? = null
         override val publications: List<Publication?>? = null
         override val sources: List<Source?>? = null
         override val issn: String? = null

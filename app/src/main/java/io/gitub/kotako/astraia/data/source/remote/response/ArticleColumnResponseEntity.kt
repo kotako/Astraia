@@ -64,7 +64,7 @@ data class ArticleColumnResponseEntity(
         override val publishedAt: String? = null
 ) : Article, Serializable {
     override val id: Long?
-        get() = link?.dropLast(12)?.toLong()
+        get() = link?.takeLast(11)?.toLong()
     override val linkJson: String?
         get() = linkJsonData?.link
     override val authors: List<Author?>?
