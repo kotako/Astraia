@@ -16,280 +16,257 @@
             type="io.gitub.kotako.astraia.detail.ArticleDetailViewModel" />
     </data>
 
-    <ScrollView
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.constraint.ConstraintLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="@{viewModel.isLoading ? View.GONE : View.VISIBLE}">
 
-            <TextView
-                android:id="@+id/titleTextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:text="@{article.title}"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="hoge" />
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/authorTextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:text="@{article.authorsString}"
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                app:layout_constraintEnd_toEndOf="@+id/titleTextView"
-                app:layout_constraintStart_toStartOf="@+id/titleTextView"
-                app:layout_constraintTop_toBottomOf="@+id/titleTextView"
-                tools:text="Authors" />
+                <TextView
+                    android:id="@+id/titleTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@{viewModel.article.title}"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="hoge" />
 
-            <TextView
-                android:id="@+id/descriptionTextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:lines="@{viewModel.isExpand() ? 100 : 3}"
-                android:text="@{article.description}"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:visibility="@{article.description == null ? View.GONE : View.VISIBLE}"
-                app:layout_constraintEnd_toEndOf="@+id/titleTextView"
-                app:layout_constraintStart_toStartOf="@+id/titleTextView"
-                app:layout_constraintTop_toBottomOf="@+id/divider2"
-                tools:text="descriptions" />
+                <TextView
+                    android:id="@+id/authorTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@{viewModel.article.authorsString}"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    app:layout_constraintEnd_toEndOf="@+id/titleTextView"
+                    app:layout_constraintStart_toStartOf="@+id/titleTextView"
+                    app:layout_constraintTop_toBottomOf="@+id/titleTextView"
+                    tools:text="Authors" />
 
-            <TextView
-                android:id="@+id/publisherTextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:text="@{article.publishersString}"
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                android:visibility="@{article.publishersString.isEmpty() ? View.GONE : View.VISIBLE}"
-                app:layout_constraintEnd_toEndOf="@+id/titleTextView"
-                app:layout_constraintStart_toStartOf="@+id/titleTextView"
-                app:layout_constraintTop_toBottomOf="@+id/authorTextView"
-                tools:text="Publishers" />
+                <TextView
+                    android:id="@+id/descriptionTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:maxLines="@{viewModel.isExpand ? Integer.MAX_VALUE : 3}"
+                    android:text="@{viewModel.article.description}"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:visibility="@{viewModel.article.description == null ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintEnd_toEndOf="@+id/titleTextView"
+                    app:layout_constraintStart_toStartOf="@+id/titleTextView"
+                    app:layout_constraintTop_toBottomOf="@+id/divider2"
+                    tools:text="descriptions" />
 
-            <ImageButton
-                android:id="@+id/readLatorButton"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginStart="64dp"
-                android:layout_marginTop="16dp"
-                android:background="?android:selectableItemBackgroundBorderless"
-                android:elevation="0dp"
-                android:scaleType="fitXY"
-                android:onClick="@{() -> viewModel.onReadLaterClick(article)}"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divider"
-                app:srcCompat="@drawable/ic_turned_in" />
+                <TextView
+                    android:id="@+id/publisherTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@{viewModel.article.publishersString}"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:visibility="@{viewModel.article.publishersString == null ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintEnd_toEndOf="@+id/titleTextView"
+                    app:layout_constraintStart_toStartOf="@+id/titleTextView"
+                    app:layout_constraintTop_toBottomOf="@+id/authorTextView"
+                    tools:text="Publishers" />
 
-            <ImageButton
-                android:id="@+id/favoriteButton"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginTop="16dp"
-                android:background="?android:selectableItemBackgroundBorderless"
-                android:scaleType="fitXY"
-                android:onClick="@{() -> viewModel.onFavoriteClick(article)}"
-                app:layout_constraintEnd_toStartOf="@+id/shareButton"
-                app:layout_constraintStart_toEndOf="@+id/readLatorButton"
-                app:layout_constraintTop_toBottomOf="@+id/divider"
-                app:srcCompat="@drawable/ic_favorite_border_black_24dp" />
+                <ImageButton
+                    android:id="@+id/readLatorButton"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="64dp"
+                    android:layout_marginTop="16dp"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:elevation="0dp"
+                    android:onClick="@{() -> viewModel.onReadLaterClick(article)}"
+                    android:scaleType="fitXY"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/divider"
+                    app:srcCompat="@drawable/ic_turned_in" />
 
-            <ImageButton
-                android:id="@+id/shareButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="64dp"
-                android:layout_marginTop="16dp"
-                android:onClick="@{() -> viewModel.onShareClick(article)}"
-                android:background="?android:selectableItemBackgroundBorderless"
-                android:scaleType="fitXY"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divider"
-                app:srcCompat="@drawable/ic_share" />
+                <ImageButton
+                    android:id="@+id/favoriteButton"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginTop="16dp"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:onClick="@{() -> viewModel.onFavoriteClick(article)}"
+                    android:scaleType="fitXY"
+                    app:layout_constraintEnd_toStartOf="@+id/shareButton"
+                    app:layout_constraintStart_toEndOf="@+id/readLatorButton"
+                    app:layout_constraintTop_toBottomOf="@+id/divider"
+                    app:srcCompat="@drawable/ic_favorite_border_black_24dp" />
 
-            <TextView
-                android:id="@+id/textView5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="263dp"
-                android:layout_marginStart="32dp"
-                android:text="Relational"
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                android:textColor="?attr/colorAccent"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                <ImageButton
+                    android:id="@+id/shareButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="64dp"
+                    android:layout_marginTop="16dp"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:onClick="@{() -> viewModel.onShareClick(article)}"
+                    android:scaleType="fitXY"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/divider"
+                    app:srcCompat="@drawable/ic_share" />
 
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="285dp"
-                android:layout_marginStart="32dp"
-                android:text="ISSN"
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                android:textColor="?attr/colorAccent"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                <TextView
+                    android:id="@+id/puhlishedAtTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@{viewModel.article.publishedAt}"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    app:layout_constraintEnd_toEndOf="@+id/titleTextView"
+                    app:layout_constraintStart_toStartOf="@+id/titleTextView"
+                    app:layout_constraintTop_toBottomOf="@+id/publisherTextView"
+                    tools:text="PublishedAt" />
 
-            <TextView
-                android:id="@+id/textView7"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="311dp"
-                android:layout_marginStart="32dp"
-                android:text="Publisher"
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                android:textColor="?attr/colorAccent"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="368dp"
+                    android:layout_height="1dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:background="?android:attr/listDivider"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/puhlishedAtTextView" />
 
-            <TextView
-                android:id="@+id/puhlishedAtTextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:text="@{article.publishedAt}"
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                app:layout_constraintEnd_toEndOf="@+id/titleTextView"
-                app:layout_constraintStart_toStartOf="@+id/titleTextView"
-                app:layout_constraintTop_toBottomOf="@+id/publisherTextView"
-                tools:text="PublishedAt" />
+                <View
+                    android:id="@+id/divider2"
+                    android:layout_width="368dp"
+                    android:layout_height="1dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:background="?android:attr/listDivider"
+                    android:visibility="@{viewModel.article.description == null ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
-            <View
-                android:id="@+id/divider"
-                android:layout_width="368dp"
-                android:layout_height="1dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:background="?android:attr/listDivider"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/puhlishedAtTextView" />
+                <ImageButton
+                    android:id="@+id/expandButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:onClick="@{() -> viewModel.expandDescription()}"
+                    android:visibility="@{viewModel.article.description == null ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/descriptionTextView"
+                    app:srcCompat="@drawable/ic_expand_more" />
 
-            <View
-                android:id="@+id/divider2"
-                android:layout_width="368dp"
-                android:layout_height="1dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:background="?android:attr/listDivider"
-                android:visibility="@{article.description == null ? View.GONE : View.VISIBLE}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView12" />
+                <View
+                    android:id="@+id/divider3"
+                    android:layout_width="368dp"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="?android:attr/listDivider"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/expandButton"
+                    app:layout_constraintVertical_bias="0.0" />
 
-            <ImageButton
-                android:id="@+id/expandButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="?android:selectableItemBackgroundBorderless"
-                android:onClick="@{() -> viewModel.expandDescription()}"
-                android:visibility="@{article.description == null ? View.GONE : View.VISIBLE}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/descriptionTextView"
-                app:srcCompat="@drawable/ic_expand_more" />
+                <TextView
+                    android:id="@+id/issnTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@{viewModel.article.issn}"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/divider3"
+                    tools:text="ISSN" />
 
-            <View
-                android:id="@+id/divider3"
-                android:layout_width="368dp"
-                android:layout_height="1dp"
-                android:layout_marginBottom="16dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:background="?android:attr/listDivider"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/expandButton"
-                app:layout_constraintVertical_bias="0.0" />
+                <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="8dp"
+                    android:text='@{viewModel.article.publications[0].name + viewModel.article.journalNumber + "巻 " + viewModel.article.startingPage + "-" + viewModel.article.endingPage}'
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/issnTextView"
+                    tools:text="収録元" />
 
-            <TextView
-                android:id="@+id/issnTextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="24dp"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
-                android:text="@{article.issn}"
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divider3"
-                tools:text="ISSN" />
+                <TextView
+                    android:id="@+id/textView11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="後で読む"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:textColor="@android:color/black"
+                    app:layout_constraintEnd_toEndOf="@+id/readLatorButton"
+                    app:layout_constraintStart_toStartOf="@+id/readLatorButton"
+                    app:layout_constraintTop_toBottomOf="@+id/readLatorButton"
+                    tools:text="後で読む" />
 
-            <TextView
-                android:id="@+id/textView10"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="24dp"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="8dp"
-                android:text='@{article.publications[0].name + article.journalNumber + "巻 " + article.startingPage + "-" + article.endingPage}'
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/issnTextView"
-                tools:text="収録元" />
+                <TextView
+                    android:id="@+id/textView12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="お気に入り"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:textColor="@android:color/black"
+                    app:layout_constraintEnd_toEndOf="@+id/favoriteButton"
+                    app:layout_constraintStart_toStartOf="@+id/favoriteButton"
+                    app:layout_constraintTop_toBottomOf="@+id/favoriteButton" />
 
-            <TextView
-                android:id="@+id/textView11"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                android:textColor="@android:color/black"
-                android:text="後で読む"
-                app:layout_constraintEnd_toEndOf="@+id/readLatorButton"
-                app:layout_constraintStart_toStartOf="@+id/readLatorButton"
-                app:layout_constraintTop_toBottomOf="@+id/readLatorButton"
-                tools:text="後で読む" />
+                <TextView
+                    android:id="@+id/textView13"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="シェア"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:textColor="@android:color/black"
+                    app:layout_constraintEnd_toEndOf="@+id/shareButton"
+                    app:layout_constraintStart_toStartOf="@+id/shareButton"
+                    app:layout_constraintTop_toBottomOf="@+id/shareButton" />
+            </android.support.constraint.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/textView12"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="お気に入り"
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                android:textColor="@android:color/black"
-                app:layout_constraintEnd_toEndOf="@+id/favoriteButton"
-                app:layout_constraintStart_toStartOf="@+id/favoriteButton"
-                app:layout_constraintTop_toBottomOf="@+id/favoriteButton" />
+        </ScrollView>
 
-            <TextView
-                android:id="@+id/textView13"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="シェア"
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                android:textColor="@android:color/black"
-                app:layout_constraintEnd_toEndOf="@+id/shareButton"
-                app:layout_constraintStart_toStartOf="@+id/shareButton"
-                app:layout_constraintTop_toBottomOf="@+id/shareButton" />
-        </android.support.constraint.ConstraintLayout>
+        <ProgressBar
+            android:id="@+id/progressBar2"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}" />
 
-    </ScrollView>
+    </FrameLayout>
 
 </layout>
