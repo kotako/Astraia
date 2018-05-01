@@ -26,7 +26,7 @@ data class AuthorColumnResponseEntity(
         override val organizations: List<Organization?>? = null
 ) : Author, Serializable {
     override val id: Long?
-        get() = link?.takeLast(11)?.toLong()
+        get() = link?.takeLast("https://ci.nii.ac.jp/naid/".length)?.toLong()
     override val linkJson: String?
         get() = "$link.json"
 }

@@ -33,6 +33,8 @@ data class ArticleColumnResponseEntity(
 
         override val description: String? = null,
 
+        override val descriptionEnglish: String? = null,
+
         @SerializedName("@language")
         override val lang: String? = null,
 
@@ -64,7 +66,7 @@ data class ArticleColumnResponseEntity(
         override val publishedAt: String? = null
 ) : Article, Serializable {
     override val id: Long?
-        get() = link?.takeLast(11)?.toLong()
+        get() = link?.drop("https://ci.nii.ac.jp/naid/".length)?.toLong()
     override val linkJson: String?
         get() = linkJsonData?.link
     override val authors: List<Author?>?

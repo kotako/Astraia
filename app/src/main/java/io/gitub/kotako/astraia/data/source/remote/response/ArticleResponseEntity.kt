@@ -16,7 +16,8 @@ data class ArticleResponseEntity(
         @SerializedName("dc:title")
         private val titles: List<NameSerialize?>? = null,
 
-        override val description: String? = null,
+        @SerializedName("dc:description")
+        private val descriptionSerialize: List<NameSerialize?>? = null,
 
         @SerializedName("dc:language")
         override val lang: String? = null,
@@ -96,4 +97,8 @@ data class ArticleResponseEntity(
         get() = relatedLinksSerialize
     override val topics: List<Topic?>?
         get() = topicsSerialize
+    override val description: String?
+        get() = descriptionSerialize?.first { description -> description?.lang.isNullOrBlank() }?.name
+    override val descriptionEnglish: String?
+        get() = descriptionSerialize?.first { description -> description?.lang == "en" }?.name
 }

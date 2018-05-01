@@ -9,6 +9,7 @@ interface Article: Serializable {
     val title: String?
     val titleInEnglish: String?
     val description: String?
+    val descriptionEnglish: String?
     val lang: String?
     val authors: List<Author?>?
     val publishers: List<Publisher?>?
