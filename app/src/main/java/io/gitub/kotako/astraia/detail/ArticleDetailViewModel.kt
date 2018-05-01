@@ -60,7 +60,9 @@ class ArticleDetailViewModel @Inject constructor(
         compositeDisposable.add(repository.addFavoriteArticle(article)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({}, defaultErrorHandler())
+                .subscribe({
+                    favorite.postValue(true)
+                }, defaultErrorHandler())
         )
     }
 
@@ -68,7 +70,9 @@ class ArticleDetailViewModel @Inject constructor(
         compositeDisposable.add(repository.addReadLatorArticle(article)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({}, defaultErrorHandler())
+                .subscribe({
+                    readLater.postValue(true)
+                }, defaultErrorHandler())
         )
     }
 
