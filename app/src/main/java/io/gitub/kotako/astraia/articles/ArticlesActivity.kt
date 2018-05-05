@@ -1,11 +1,6 @@
 package io.gitub.kotako.astraia.articles
 
-import android.app.SearchManager
-import android.content.Context
 import android.os.Bundle
-import android.support.v7.widget.SearchView
-import android.view.Menu
-import android.view.MenuItem
 import dagger.android.support.DaggerAppCompatActivity
 import io.gitub.kotako.astraia.R
 import io.gitub.kotako.astraia.data.source.ArticleRepository
@@ -34,16 +29,5 @@ class ArticlesActivity: DaggerAppCompatActivity(), ArticlesNavigator {
             add(R.id.container, fragment)
             commit()
         }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.search, menu)
-        val view = (menu.findItem(R.id.search) as MenuItem).actionView as SearchView
-        val searchService = getSystemService(Context.SEARCH_SERVICE) as SearchManager
-
-        view.setSearchableInfo(searchService.getSearchableInfo(componentName))
-        view.isIconified = true
-
-        return true
     }
 }

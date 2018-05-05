@@ -1,14 +1,17 @@
 package io.gitub.kotako.astraia.articles
 
+import android.app.SearchManager
 import android.arch.lifecycle.Observer
+import android.content.Context
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.support.v7.widget.SearchView
+import android.util.Log
+import android.view.*
 import dagger.android.support.DaggerFragment
+import io.gitub.kotako.astraia.R
 import io.gitub.kotako.astraia.data.Entity.Article
 import io.gitub.kotako.astraia.data.source.ArticleRepository
 import io.gitub.kotako.astraia.databinding.FragmentArticlesBinding
@@ -53,6 +56,7 @@ class ArticlesFragment : DaggerFragment(), ArticleItemNavigator {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        setHasOptionsMenu(true)
         binding = FragmentArticlesBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -73,6 +77,25 @@ class ArticlesFragment : DaggerFragment(), ArticleItemNavigator {
     override fun onResume() {
         super.onResume()
         viewModel.start()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater?.inflate(R.menu.search, menu)
+        val view = (menu?.findItem(R.id.search) as MenuItem).actionView as SearchView
+        val searchService = activity?.getSystemService(Context.SEARCH_SERVICE) as SearchManager
+
+        view.setSearchableInfo(searchService.getSearchableInfo(activity?.componentName))
+        view.isIconified = true
+        view.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+            override fun onQueryTextChange(p0: String?): Boolean = false
+
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                view.clearFocus()
+                Log.d("hoge", p0)
+                return false
+            }
+        })
     }
 
     override fun onStartArticleDetail(article: Article) {
