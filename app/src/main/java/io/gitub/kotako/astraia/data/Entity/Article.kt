@@ -21,8 +21,8 @@ interface Article: Serializable {
     val citedCount: Int?
     val journalNumber: Int?
     val issueNumber: Int?
-    val startingPage: Int?
-    val endingPage: Int?
+    val startingPage: String?
+    val endingPage: String?
     val publishedAt: String?
     val jounal: Journal?
     val relatedLinks: List<Link?>?

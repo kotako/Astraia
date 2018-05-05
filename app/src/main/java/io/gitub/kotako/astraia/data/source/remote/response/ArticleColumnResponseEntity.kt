@@ -57,10 +57,10 @@ data class ArticleColumnResponseEntity(
         override val issueNumber: Int? = null,
 
         @SerializedName("prism:startingPage")
-        override val startingPage: Int? = null,
+        override val startingPage: String? = null,
 
         @SerializedName("prism:endingPage")
-        override val endingPage: Int? = null,
+        override val endingPage: String? = null,
 
         @SerializedName("prism:publicationDate")
         override val publishedAt: String? = null
