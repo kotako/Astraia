@@ -18,13 +18,9 @@ class ArticlesViewModel @Inject constructor(
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
     private var navigator: ArticlesNavigator? = null
 
-    var query: Query = Query(keyword = "android")
+    var query: Query = Query(keyword = "")
     val articles = MutableLiveData<MutableList<Article>>().apply { postValue(mutableListOf()) }
     val isLoading = MutableLiveData<Boolean>().apply { postValue(false) }
-
-    fun start() {
-        if (articles.value?.isEmpty() == true) fetchArticles()
-    }
 
     fun setNavigator(articlesNavigator: ArticlesNavigator) {
         navigator = articlesNavigator
@@ -40,6 +36,18 @@ class ArticlesViewModel @Inject constructor(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ t: List<Article> -> articles.postValue(articles.value?.plus(t)?.toMutableList()) }, defaultErrorHandler())
         )
+    }
+
+    fun refreshArticles() {
+        articles.postValue(mutableListOf())
+        query = Query(keyword = query.keyword)
+        fetchArticles()
+    }
+
+    fun searchArticles(keyword: String) {
+        articles.postValue(mutableListOf())
+        query = Query(keyword = keyword)
+        fetchArticles()
     }
 
     override fun onCleared() {

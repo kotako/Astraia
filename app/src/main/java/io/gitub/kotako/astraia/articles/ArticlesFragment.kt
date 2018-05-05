@@ -14,6 +14,7 @@ import dagger.android.support.DaggerFragment
 import io.gitub.kotako.astraia.R
 import io.gitub.kotako.astraia.data.Entity.Article
 import io.gitub.kotako.astraia.data.source.ArticleRepository
+import io.gitub.kotako.astraia.data.source.Query
 import io.gitub.kotako.astraia.databinding.FragmentArticlesBinding
 import io.gitub.kotako.astraia.detail.ArticleDetailActivity
 import io.gitub.kotako.astraia.di.ViewModelFactory
@@ -74,11 +75,6 @@ class ArticlesFragment : DaggerFragment(), ArticleItemNavigator {
         setUpRefreshView()
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.start()
-    }
-
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater?.inflate(R.menu.search, menu)
@@ -86,14 +82,14 @@ class ArticlesFragment : DaggerFragment(), ArticleItemNavigator {
         val searchService = activity?.getSystemService(Context.SEARCH_SERVICE) as SearchManager
 
         view.setSearchableInfo(searchService.getSearchableInfo(activity?.componentName))
-        view.isIconified = true
+        view.setIconifiedByDefault(true)
         view.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
             override fun onQueryTextChange(p0: String?): Boolean = false
 
-            override fun onQueryTextSubmit(p0: String?): Boolean {
+            override fun onQueryTextSubmit(query: String?): Boolean {
                 view.clearFocus()
-                Log.d("hoge", p0)
-                return false
+                viewModel.searchArticles(query ?: "")
+                return true
             }
         })
     }
@@ -105,15 +101,14 @@ class ArticlesFragment : DaggerFragment(), ArticleItemNavigator {
 
     private fun setUpRefreshView() {
         binding.refreshLayout.setOnRefreshListener {
-            viewModel.articles.value = mutableListOf()
-            viewModel.fetchArticles()
+            viewModel.refreshArticles()
         }
     }
 
     private fun setUpRecyclerView() {
         binding.articlesList.apply {
             adapter = ArticlesRecyclerAdapter(
-                    articles = viewModel.articles.value?.toMutableList() ?: mutableListOf(),
+                    articles = mutableListOf(),
                     navigator = this@ArticlesFragment,
                     repository = repository,
                     onBottomReached = ::onBottomReached)
