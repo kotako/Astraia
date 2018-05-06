@@ -34,6 +34,7 @@ class ArticlesViewModel @Inject constructor(
                 .doFinally { isLoading.postValue(false) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .retry(2)
                 .subscribe({ t: List<Article> -> articles.postValue(articles.value?.plus(t)?.toMutableList()) }, defaultErrorHandler())
         )
     }

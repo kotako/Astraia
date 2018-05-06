@@ -2,7 +2,6 @@ package io.gitub.kotako.astraia.detail
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import android.util.Log
 import io.gitub.kotako.astraia.data.Entity.Article
 import io.gitub.kotako.astraia.data.realm.RealmArticle
 import io.gitub.kotako.astraia.data.source.ArticleRepository
@@ -32,7 +31,7 @@ class ArticleDetailViewModel @Inject constructor(
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doFinally { isLoading.postValue(false) }
-                .retry(1)
+                .retry(2)
                 .subscribe({ t: Article ->
                     this.article.postValue(t)
                 }, defaultErrorHandler())
