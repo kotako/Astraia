@@ -22,4 +22,10 @@
         <item name="android:elevation">4dp</item>
     </style>
 
+    <style name="Navigation">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_gravity">start</item>
+    </style>
+
 </resources>
