@@ -2,19 +2,18 @@ package io.gitub.kotako.astraia.articles
 
 import android.app.SearchManager
 import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
-import android.util.Log
 import android.view.*
 import dagger.android.support.DaggerFragment
 import io.gitub.kotako.astraia.R
 import io.gitub.kotako.astraia.data.Entity.Article
 import io.gitub.kotako.astraia.data.source.ArticleRepository
-import io.gitub.kotako.astraia.data.source.Query
 import io.gitub.kotako.astraia.databinding.FragmentArticlesBinding
 import io.gitub.kotako.astraia.detail.ArticleDetailActivity
 import io.gitub.kotako.astraia.di.ViewModelFactory
@@ -26,7 +25,9 @@ class ArticlesFragment : DaggerFragment(), ArticleItemNavigator {
     lateinit var viewModelFactory: ViewModelFactory
     @Inject
     lateinit var repository: ArticleRepository
-    private lateinit var viewModel: ArticlesViewModel
+    private val viewModel: ArticlesViewModel by lazy {
+        ViewModelProviders.of(activity!!, viewModelFactory).get(ArticlesViewModel::class.java)
+    }
     private lateinit var binding: FragmentArticlesBinding
 
     private val articlesListObserver = Observer<MutableList<Article>> {
@@ -50,10 +51,6 @@ class ArticlesFragment : DaggerFragment(), ArticleItemNavigator {
 
     companion object {
         fun newInstance(): ArticlesFragment = ArticlesFragment()
-    }
-
-    fun setViewModel(viewModel: ArticlesViewModel) {
-        this.viewModel = viewModel
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

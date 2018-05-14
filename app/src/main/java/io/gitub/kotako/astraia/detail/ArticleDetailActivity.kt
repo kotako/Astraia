@@ -1,6 +1,7 @@
 package io.gitub.kotako.astraia.detail
 
 import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.databinding.DataBindingUtil
@@ -18,7 +19,7 @@ class ArticleDetailActivity : DaggerAppCompatActivity(), ArticleDetailNavigator 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
     private val viewModel: ArticleDetailViewModel by lazy {
-        viewModelFactory.create(ArticleDetailViewModel::class.java)
+        ViewModelProviders.of(this, viewModelFactory).get(ArticleDetailViewModel::class.java)
     }
     private lateinit var binding: ActivityArticleDetailBinding
     private val readLaterObserver = Observer<Boolean> { readLater: Boolean? ->
